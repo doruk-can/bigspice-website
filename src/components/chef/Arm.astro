@@ -1,0 +1,53 @@
+---
+/**
+ * LAYER — the right arm, on its own so it can move without redrawing him.
+ * PIVOT: (162, 218) in chef space — the shoulder. Any replacement art must
+ * keep that point, because every arm animation rotates about it.
+ *
+ * `wave`  beckons at the top of the page (the app's own greeting)
+ * `point` holds the pointer stick and taps it — the teaching pose
+ * `hold`  comes round the pot at the end
+ *
+ * In `point` the stick is drawn BEFORE the hand so the hand closes over it,
+ * and the whole thing lives in `p-stick` so a painted pointer can replace it
+ * on its own. Stick pivot is the grip at (192, 185).
+ */
+interface Props { pose?: 'wave' | 'point' | 'hold' }
+const { pose = 'wave' } = Astro.props;
+---
+<g class="p-armR">
+  {pose === 'hold' && (
+    <>
+      <path d="M162 218 C166 226 169 232 170 236" fill="none" stroke="var(--fg-line)" stroke-width="2.6" stroke-linecap="round"/>
+      <ellipse cx="172" cy="240" rx="6.5" ry="7" fill="var(--fg-skin)"/>
+      <ellipse cx="172" cy="240" rx="6.5" ry="7" fill="none" stroke="var(--fg-line)" stroke-width="2.2"/>
+    </>
+  )}
+
+  {pose === 'point' && (
+    <>
+      <path d="M162 218 C177 214 190 205 194 192" fill="none" stroke="var(--fg-line)" stroke-width="2.6" stroke-linecap="round"/>
+      <g class="p-stick">
+        <path d="M188 188 L234.5 145.5" fill="none" stroke="var(--fg-belt)" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M188 188 L234.5 145.5" fill="none" stroke="var(--fg-line)" stroke-width="1" stroke-linecap="round" opacity=".55"/>
+        <circle cx="235" cy="145" r="3" fill="var(--fg-line)"/>
+      </g>
+      <ellipse cx="196" cy="182" rx="6.8" ry="7" fill="var(--fg-skin)" transform="rotate(-32 196 182)"/>
+      <ellipse cx="196" cy="182" rx="6.8" ry="7" fill="none" stroke="var(--fg-line)" stroke-width="2.2" transform="rotate(-32 196 182)"/>
+      <g class="p-fing">
+        <path d="M191 177 q4 -3 8 -1" fill="none" stroke="var(--fg-line)" stroke-width="1.8" stroke-linecap="round"/>
+      </g>
+    </>
+  )}
+
+  {pose === 'wave' && (
+    <>
+      <path d="M162 218 C177 214 190 205 194 190" fill="none" stroke="var(--fg-line)" stroke-width="2.6" stroke-linecap="round"/>
+      <ellipse cx="196" cy="180" rx="6.5" ry="8" fill="var(--fg-skin)"/>
+      <ellipse cx="196" cy="180" rx="6.5" ry="8" fill="none" stroke="var(--fg-line)" stroke-width="2.2"/>
+      <g class="p-fing">
+        <path d="M191 174 l-1 -4 M195 172 l0 -4 M199 173 l1 -4" fill="none" stroke="var(--fg-line)" stroke-width="1.8" stroke-linecap="round"/>
+      </g>
+    </>
+  )}
+</g>

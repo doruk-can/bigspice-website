@@ -1,0 +1,27 @@
+---
+import Base from './Base.astro';
+import type { Locale } from '../lib/copy';
+
+import { SITE } from '../lib/site.mjs';
+import { copy, href } from '../lib/copy';
+
+interface Props { lang: Locale; title: string; description: string; jsonLd?: unknown; notice?: boolean }
+const { lang, title, description, jsonLd, notice = false } = Astro.props;
+const t = copy[lang];
+---
+<Base lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <section class="legal">
+    <div class="wrap">
+      <article class="doc">
+        {notice && t.legalEnglishOnly && (
+          <p class="doc-notice" lang={lang}>
+            {t.legalEnglishOnly} <a href={href(lang, '/support')}>{t.nav.support}</a>
+            <span aria-hidden="true"> · </span>
+            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          </p>
+        )}
+        <slot />
+      </article>
+    </div>
+  </section>
+</Base>

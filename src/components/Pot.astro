@@ -1,0 +1,48 @@
+---
+/**
+ * The pot. Two loop handles, a real rim, a wash belly, and a mouth you can see
+ * into — the ingredients land INSIDE it, clipped by #pot-inner and tucked
+ * behind the near rim, which is what makes the landing read as "in" rather
+ * than "in front of".
+ *
+ * Coordinate space 0 0 160 132. The rim is the ellipse at (80, 40); the pile
+ * sits just above it at y ≈ 32, and --mouth in the CSS aims the falling
+ * ingredients and the splash ring at that same point, so nothing depends on a
+ * measured pixel.
+ */
+interface Props { lid?: boolean; class?: string }
+const { lid = false, class: cls = '' } = Astro.props;
+import Lid from './chef/Lid.astro';
+---
+<svg class={cls} viewBox="0 0 160 132" aria-hidden="true" focusable="false">
+  <!-- belly -->
+  <path d="M26 40 C26 92 42 116 80 116 C118 116 134 92 134 40 Z" fill="var(--fg-pot2)"/>
+  <path d="M26 40 C26 92 42 116 80 116 C118 116 134 92 134 40 Z" fill="var(--fg-pot)" fill-opacity=".55"/>
+
+  <!-- handles, behind the body line so they read as loops coming off the rim -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M27 52 C9 55 5 66 8 73 C11 80 18 83 27 84" stroke="var(--fg-pot)" stroke-width="8"/>
+    <path d="M27 52 C9 55 5 66 8 73 C11 80 18 83 27 84" stroke="var(--prop-line)" stroke-width="2.6"/>
+    <path d="M133 52 C151 55 155 66 152 73 C149 80 142 83 133 84" stroke="var(--fg-pot)" stroke-width="8"/>
+    <path d="M133 52 C151 55 155 66 152 73 C149 80 142 83 133 84" stroke="var(--prop-line)" stroke-width="2.6"/>
+  </g>
+
+  <!-- the inside, then what is in it -->
+  <ellipse cx="80" cy="40" rx="52" ry="11" fill="var(--fg-pot3)"/>
+  <g clip-path="url(#pot-inner)">
+    <g class="rest" data-rest="1" transform="translate(54 31) scale(.5) translate(-32 -32)"><use href="#ing-tomato"/></g>
+    <g class="rest" data-rest="2" transform="translate(100 29) scale(.48) translate(-32 -32)"><use href="#ing-pepper"/></g>
+    <g class="rest" data-rest="3" transform="translate(77 34) scale(.52) translate(-32 -32)"><use href="#ing-onion"/></g>
+    <g class="rest" data-rest="4" transform="translate(117 31) scale(.46) translate(-32 -32)"><use href="#ing-herbs"/></g>
+  </g>
+
+  <!-- the near rim, drawn OVER the contents -->
+  <path d="M26 40 A54 12 0 0 0 134 40 Z" fill="var(--fg-pot)"/>
+  <ellipse cx="80" cy="40" rx="54" ry="12" fill="none" stroke="var(--prop-line)" stroke-width="2.6"/>
+  <path d="M26 40 C26 92 42 116 80 116 C118 116 134 92 134 40" fill="none" stroke="var(--prop-line)" stroke-width="2.8" stroke-linejoin="round"/>
+
+  <!-- a little light on the belly, the way the app's props are lit -->
+  <path d="M44 62 C42 82 48 96 58 104" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity=".16"/>
+
+  {lid && <Lid />}
+</svg>

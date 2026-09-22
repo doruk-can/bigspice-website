@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import Home from '../components/Home.astro';
+import { copy } from '../lib/copy';
+import { homeSchema } from '../lib/schema';
+
+const lang = 'en' as const;
+const t = copy[lang];
+
+---
+<Base lang={lang} title={t.meta.title} description={t.meta.description} jsonLd={homeSchema(lang)}>
+  <Home lang={lang} />
+</Base>

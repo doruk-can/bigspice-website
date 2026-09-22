@@ -1,0 +1,101 @@
+---
+/**
+ * Every drawing on the site, once, in one hidden <defs>. Ink line + a light
+ * watercolour wash, the app's own drawing language. Colours are CSS custom
+ * properties so the whole cast follows the theme from one place.
+ */
+---
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs>
+
+  <!-- the toque, cropped so the viewBox BOTTOM is the band's bottom edge:
+       that is what lets the lock-up hang it off the baseline by 1ex + .14em -->
+  <g id="tq">
+    <path d="M78 103 C64 74 92 54 112 64 C120 46 148 50 148 72 C170 70 178 92 160 103 Z" fill="var(--fg-hat)" transform="translate(2 -2)"/>
+    <path d="M78 103 C64 74 92 54 112 64 C120 46 148 50 148 72 C170 70 178 92 160 103 C144 110 92 111 78 103" fill="none" stroke="var(--fg-line)" stroke-width="4.4"/>
+    <path d="M78 103 L160 103 L157 121 L82 121 Z" fill="var(--fg-hat2)"/>
+    <path d="M78 103 L160 103 L157 121 L82 121 Z" fill="none" stroke="var(--fg-line)" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+
+  <!-- the globe on the language switch. UI chrome, not part of the cast, so
+       it takes currentColor and follows whatever the link is coloured. -->
+  <symbol id="globe" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="10" cy="10" r="8.1"/>
+    <ellipse cx="10" cy="10" rx="3.7" ry="8.1"/>
+    <path d="M2.7 7.3 H17.3 M2.7 12.7 H17.3" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ── ingredients ─────────────────────────────────────────────────── -->
+  <g id="ing-tomato">
+    <path d="M32 21 q7 5 13 0" fill="none" stroke="var(--dish-b)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M32 21 q-7 5 -13 0" fill="none" stroke="var(--dish-b)" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="32" cy="38" r="21" fill="#C0492F" fill-opacity=".62"/>
+    <circle cx="32" cy="38" r="21" fill="none" stroke="var(--prop-line)" stroke-width="2.6"/>
+    <path d="M23 31 q6 -6 12 -4" fill="none" stroke="var(--card)" stroke-width="2.6" stroke-linecap="round" opacity=".7"/>
+    <path d="M32 26 v-8" fill="none" stroke="var(--dish-b)" stroke-width="3.2" stroke-linecap="round"/>
+  </g>
+  <g id="ing-pepper">
+    <path d="M19 32 C19 20 25 15 32 15 C39 15 45 20 45 32 C45 46 41 56 32 56 C23 56 19 46 19 32 Z" fill="var(--dish-b)" fill-opacity=".58"/>
+    <path d="M19 32 C19 20 25 15 32 15 C39 15 45 20 45 32 C45 46 41 56 32 56 C23 56 19 46 19 32 Z" fill="none" stroke="var(--prop-line)" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M26 20 C24 34 25 46 28 54 M38 20 C40 34 39 46 36 54" fill="none" stroke="var(--prop-line)" stroke-width="1.8" opacity=".45"/>
+    <path d="M26 15 q6 -5 12 0" fill="none" stroke="#3F6272" stroke-width="3" stroke-linecap="round"/>
+    <path d="M32 14 v-7" fill="none" stroke="var(--fg-belt)" stroke-width="3.2" stroke-linecap="round"/>
+  </g>
+  <g id="ing-onion">
+    <path d="M32 18 C45 24 50 34 50 41 C50 51 42 58 32 58 C22 58 14 51 14 41 C14 34 19 24 32 18 Z" fill="var(--ochre)" fill-opacity=".72"/>
+    <path d="M32 18 C45 24 50 34 50 41 C50 51 42 58 32 58 C22 58 14 51 14 41 C14 34 19 24 32 18 Z" fill="none" stroke="var(--prop-line)" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M32 20 C29 32 29 46 32 57 M24 22 C20 34 21 47 25 56 M40 22 C44 34 43 47 39 56" fill="none" stroke="var(--prop-line)" stroke-width="1.7" opacity=".42"/>
+    <path d="M32 18 q-3 -8 -9 -11 M32 18 q3 -8 9 -11" fill="none" stroke="var(--dish-b)" stroke-width="2.8" stroke-linecap="round"/>
+  </g>
+  <g id="ing-herbs">
+    <path d="M33 58 C33 42 35 26 39 12" fill="none" stroke="var(--dish-b)" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="25" cy="44" rx="10" ry="6" fill="var(--dish-b)" fill-opacity=".55" transform="rotate(-24 25 44)"/>
+    <ellipse cx="25" cy="44" rx="10" ry="6" fill="none" stroke="var(--prop-line)" stroke-width="2.2" transform="rotate(-24 25 44)"/>
+    <ellipse cx="45" cy="36" rx="10" ry="6" fill="var(--dish-b)" fill-opacity=".55" transform="rotate(20 45 36)"/>
+    <ellipse cx="45" cy="36" rx="10" ry="6" fill="none" stroke="var(--prop-line)" stroke-width="2.2" transform="rotate(20 45 36)"/>
+    <ellipse cx="28" cy="26" rx="9" ry="5.5" fill="var(--dish-b)" fill-opacity=".55" transform="rotate(-30 28 26)"/>
+    <ellipse cx="28" cy="26" rx="9" ry="5.5" fill="none" stroke="var(--prop-line)" stroke-width="2.2" transform="rotate(-30 28 26)"/>
+  </g>
+
+  <!-- ── the served dish ─────────────────────────────────────────────── -->
+  <g id="dish">
+    <path d="M18 76 q10 6 32 6 q22 0 32 -6" fill="none" stroke="var(--prop-line)" stroke-width="2.2" opacity=".28"/>
+    <ellipse cx="50" cy="70" rx="46" ry="12" fill="var(--card)"/>
+    <ellipse cx="50" cy="70" rx="46" ry="12" fill="none" stroke="var(--prop-line)" stroke-width="2.6"/>
+    <ellipse cx="50" cy="68" rx="34" ry="8" fill="none" stroke="var(--prop-line)" stroke-width="1.6" opacity=".38"/>
+    <path d="M22 66 C24 46 36 36 50 36 C64 36 76 46 78 66 Z" fill="var(--dish-a)" fill-opacity=".62"/>
+    <path d="M22 66 C24 46 36 36 50 36 C64 36 76 46 78 66" fill="none" stroke="var(--prop-line)" stroke-width="2.4" stroke-linejoin="round"/>
+    <ellipse cx="36" cy="54" rx="9" ry="6" fill="var(--dish-c)" fill-opacity=".8"/>
+    <ellipse cx="36" cy="54" rx="9" ry="6" fill="none" stroke="var(--prop-line)" stroke-width="1.8"/>
+    <ellipse cx="62" cy="57" rx="8" ry="5.5" fill="var(--dish-b)" fill-opacity=".72"/>
+    <ellipse cx="62" cy="57" rx="8" ry="5.5" fill="none" stroke="var(--prop-line)" stroke-width="1.8"/>
+    <path d="M50 44 q7 -4 10 -10" fill="none" stroke="var(--dish-b)" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M34 28 q-6 -9 0 -17 M50 24 q-7 -10 0 -19 M66 28 q6 -9 0 -16" fill="none" stroke="var(--prop-line)" stroke-width="2.2" stroke-linecap="round" opacity=".32"/>
+  </g>
+
+  <!-- ── bits ────────────────────────────────────────────────────────── -->
+  <g id="splash-ring">
+    <ellipse cx="50" cy="50" rx="34" ry="11" fill="none" stroke="var(--prop-line)" stroke-width="2.6" opacity=".55"/>
+    <path d="M28 36 q-4 -9 -2 -14 M50 30 q0 -10 3 -15 M72 36 q5 -8 4 -13" fill="none" stroke="var(--prop-line)" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>
+  </g>
+  <g id="spark"><path d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0 Z"/></g>
+
+  <!-- the app's own step band, for the phone in the hero -->
+  <symbol id="i-stir" viewBox="0 0 100 62">
+    <path d="M14 22 C14 44 24 56 50 56 C76 56 86 44 86 22 Z" fill="var(--fg-pot2)"/>
+    <path d="M14 22 A36 8 0 0 1 86 22" fill="none" stroke="var(--fg-pot)" stroke-width="4"/>
+    <path d="M50 30 L62 2" fill="none" stroke="var(--fg-belt)" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="49" cy="32" rx="8" ry="4" fill="var(--fg-belt)" stroke="var(--prop-line)" stroke-width="1.8"/>
+    <path d="M14 22 C14 44 24 56 50 56 C76 56 86 44 86 22" fill="none" stroke="var(--prop-line)" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M14 22 A36 8 0 0 0 86 22" fill="none" stroke="var(--fg-pot)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M14 22 A36 8 0 0 0 86 22" fill="none" stroke="var(--prop-line)" stroke-width="2.2"/>
+  </symbol>
+
+  <!-- What the pot can hold. It reaches ABOVE the rim line on purpose: food
+       piled in a pot stands proud of the rim, and clipping it at the chord left
+       each ingredient as an 11-unit sliver. The near rim is painted over the
+       bottom afterwards, which is what tucks the pile in. -->
+  <clipPath id="pot-inner">
+    <ellipse cx="80" cy="40" rx="52" ry="11"/>
+    <rect x="30" y="14" width="100" height="32"/>
+  </clipPath>
+</defs></svg>

@@ -1,0 +1,13 @@
+---
+import Legal from '../layouts/Legal.astro';
+import Support from '../components/Support.astro';
+import { copy } from '../lib/copy';
+import { supportSchema } from '../lib/schema';
+
+const lang = 'en' as const;
+const t = copy[lang];
+---
+<Legal lang={lang} title={t.meta.supportTitle} description={t.meta.supportDescription}
+       jsonLd={supportSchema(lang)}>
+  <Support lang={lang} />
+</Legal>

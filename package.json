@@ -1,0 +1,25 @@
+{
+  "name": "bigspice-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "verify": "node --disable-warning=ExperimentalWarning scripts/verify.mjs",
+    "assets": "node scripts/assets.mjs",
+    "fonts": "node scripts/fonts.mjs",
+    "shots": "node scripts/shots.mjs",
+    "local": "node scripts/local-preview.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.14.1"
+  },
+  "devDependencies": {
+    "fontkit": "^2.0.4",
+    "puppeteer-core": "^23.11.1",
+    "sharp": "^0.35.4"
+  }
+}

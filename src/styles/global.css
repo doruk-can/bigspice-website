@@ -1,0 +1,1025 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Big Spice — marketing site
+   Tokens mirrored from the app's src/constants/theme.ts (Margin Notes).
+   Light lives on bare :root; dark is redefined in two guards so an explicit
+   choice beats the OS in both directions.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --paper: #F6F1E7;
+  --card: #FBF8F1;
+  --rule: #E6DCCB;
+  --ink: #1F1B17;
+  --ink-soft: #6B6158;
+  --hair: rgba(31, 27, 23, .2);
+  --hair-strong: rgba(31, 27, 23, .45);
+  --wash: rgba(31, 27, 23, .06);
+  --red: #C8442D;
+  /* The same pencil, 3% darker, for anything that is READ rather than drawn:
+     #C8442D sits at 4.32:1 on paper and AA wants 4.5. Drawn marks — the dotted
+     path, the timer arc, the focus ring — keep the brand value. */
+  --red-text: #C2422C;
+  --red-rule: rgba(200, 68, 45, .55);
+  --ochre: #E9C46A;
+  --ochre-wash: rgba(233, 196, 106, .45);
+  --dish-a: #92351F;
+  --dish-b: #5C7A3B;
+  --dish-c: #B98A2E;
+
+  /* THE CHARACTER'S PAINT, FROZEN. There is no dark version of him and there is
+     not going to be one: chef-character.md says he is a sticker laid on the
+     page, not a thing lit by it, and inverting his line turned him into a
+     gingerbread man on the night ground. His cream, terracotta and brass all
+     read on dark; only the outer contour softens, which is what a sticker does.
+     Props — the pot, the lid, the food — DO follow the theme, on --prop-line. */
+  --fg-line: #2E2A26;
+  --fg-skin: #F5B77E;
+  --fg-coat: #FBF6E9;
+  --fg-apron: #B5673A;
+  --fg-belt: #8C5A3C;
+  --fg-btn: #E0A93E;
+  --fg-nose: #E86A3C;
+  --fg-brow: #4A3626;
+  --fg-hat: #FDF8EC;
+  --fg-hat2: #EFE3CB;
+  --fg-cheek: rgba(232, 106, 60, .53);
+  --prop-line: #2E2A26;
+  /* the device's own frame — the one thing on the page that is a lit object */
+  --bezel: #1F1B17;
+  --fg-pot: #8A6248;
+  --fg-pot2: #584134;
+  --fg-pot3: #3E2E24;
+  --fg-steel: #C8BFB1;
+
+  /* The brand ochre never flips — a brand colour that changes is not one.
+     Everything set on the ochre band is a literal for the same reason. */
+  --brand-ochre: #E9C46A;
+  --brand-ink: #1F1B17;
+  --brand-word: #FFFBF0;
+
+  /* the lock-up: the toque IS the tittle of the dotless ı */
+  --tq-w: 1.15em;
+  --tq-h: calc(var(--tq-w) * .6695);
+  --tq-tilt: -8deg;
+  --tq-lift: calc(1ex + .14em);
+
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --hand: "Caveat", "Bradley Hand", cursive;
+
+  /* the highlighter: the brand ochre, laid over the text like a marker */
+  --select: rgba(233, 196, 106, .6);
+
+  --gutter: clamp(20px, 4.2vw, 48px);
+  --nav-h: 64px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1C1916;
+    --card: #221E1A;
+    --rule: #2A2520;
+    --ink: #EDE6D9;
+    --ink-soft: #A89E92;
+    --hair: rgba(237, 230, 217, .2);
+    --hair-strong: rgba(237, 230, 217, .45);
+    --wash: rgba(237, 230, 217, .06);
+    --red: #E0684F;
+    --red-text: #E0684F;
+    --red-rule: rgba(224, 104, 79, .5);
+    --ochre: #D9B35A;
+    --ochre-wash: rgba(217, 179, 90, .35);
+    --dish-a: #C4704F;
+    --dish-b: #8DA96A;
+    --dish-c: #D6A94E;
+
+    --select: rgba(217, 179, 90, .3);
+    --prop-line: #EDE6D9;
+    --bezel: #4A4238;
+    --fg-pot: #6E4E38;
+    --fg-pot2: #3A2C22;
+    --fg-pot3: #241B15;
+    --fg-steel: #6E675E;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #1C1916; --card: #221E1A; --rule: #2A2520;
+  --ink: #EDE6D9; --ink-soft: #A89E92;
+  --hair: rgba(237, 230, 217, .2); --hair-strong: rgba(237, 230, 217, .45);
+  --wash: rgba(237, 230, 217, .06);
+  --red: #E0684F; --red-text: #E0684F; --red-rule: rgba(224, 104, 79, .5);
+  --ochre: #D9B35A; --ochre-wash: rgba(217, 179, 90, .35);
+  --dish-a: #C4704F; --dish-b: #8DA96A; --dish-c: #D6A94E;
+  --select: rgba(217, 179, 90, .3);
+  --prop-line: #EDE6D9;
+  --bezel: #4A4238;
+  --fg-pot: #6E4E38; --fg-pot2: #3A2C22; --fg-pot3: #241B15; --fg-steel: #6E675E;
+  color-scheme: dark;
+}
+
+/* ── base ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  /* `clip`, not `hidden`: hidden makes body a scroll container and the pinned
+     pot would stop sticking to the viewport. */
+  overflow-x: clip;
+}
+
+h1, h2, h3 { margin: 0; font-weight: 500; letter-spacing: -.014em; line-height: 1.08; }
+p { margin: 0; }
+img, svg { max-width: 100%; }
+a { color: var(--red-text); }
+
+/* The highlighter, not the OS blue. Dragging over a warm paper page and
+   getting a cold system selection is the one moment the illusion breaks. */
+::selection { background: var(--select); color: var(--ink); }
+
+/* Balanced headings, no orphans in body copy. Both are progressive: a browser
+   that does not know them wraps exactly as it does today. */
+h1, h2, h3 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
+
+:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Everything that reacts to a pointer moves rather than snaps. One duration,
+   one curve, so the whole page agrees about how fast it answers — and none of
+   it under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .nav a.link,
+  .lang-switch,
+  .lang-switch .globe,
+  .foot a,
+  .skip,
+  .legal .doc a,
+  .notfound .nf-links a,
+  a.badge {
+    transition: color .17s ease, border-color .17s ease, opacity .17s ease,
+                background-color .17s ease, transform .17s cubic-bezier(.22, .61, .36, 1);
+  }
+}
+
+.wrap {
+  max-width: 1140px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--hair-strong);
+  border-radius: 0 0 6px 0;
+  padding: 12px 18px;
+  text-decoration: none;
+}
+.skip:focus { left: 0; }
+
+/* ── the lock-up ───────────────────────────────────────────────────────── */
+.wm {
+  /* 800, which is the weight the brand is drawn at — see the lock-up spec.
+     At 600 it was a different mark. fonts.mjs fetches the 800 instance, so
+     nothing here is a synthesised bold. */
+  font-weight: 800;
+  letter-spacing: -.024em;
+  line-height: 1;
+  white-space: nowrap;
+  display: inline-block;
+  color: var(--wm-c, var(--ink));
+}
+.dl { position: relative; display: inline-block; }
+.bl {
+  display: inline-block;
+  width: 0; height: 0;
+  vertical-align: baseline;
+  position: relative;
+  margin-left: -50%;
+}
+.bl .tq {
+  position: absolute;
+  left: 0;
+  bottom: var(--tq-lift);
+  width: var(--tq-w);
+  height: var(--tq-h);
+  display: block;
+  transform: translateX(-50%) rotate(var(--tq-tilt));
+  transform-origin: 50% 100%;
+  overflow: visible;
+}
+
+/* ── nav ───────────────────────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--nav-h);
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter: blur(8px);
+  /* the paper's own ruled tone, not an ink hairline — the ink one read as a
+     warm line drawn across the page */
+  border-bottom: 1px solid var(--rule);
+}
+.nav > .wrap { height: 100%; display: flex; align-items: center; gap: 24px; }
+.nav .brand { display: inline-flex; align-items: center; text-decoration: none; color: inherit; }
+.nav .brand .wm { font-size: 23px; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: clamp(14px, 2.6vw, 28px);
+}
+.nav a.link {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 15px;
+  padding: 10px 2px;
+  border-bottom: 1.5px solid transparent;
+  display: inline-block;
+}
+.nav a.link:hover, .nav a.link[aria-current="page"] {
+  color: var(--ink);
+  border-bottom-color: var(--red);
+}
+
+/* ── the language switch ───────────────────────────────────────────────── */
+/* Not a fourth destination, so it lives outside the list of pages: at the far
+   end of the bar, behind a hairline, with a globe in front of it. Borderless
+   on purpose — the rule already does the separating, and a pill on top of a
+   rule reads as two fences around one word. Mirrored in the footer, which is
+   the other place people look for a language. */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+.lang-switch .globe { width: 15px; height: 15px; flex: none; opacity: .78; }
+.lang-switch:hover { color: var(--red-text); }
+.lang-switch:hover .globe { opacity: 1; }
+
+/* Header: the globe on its own. The hairline still does the separating, and
+   the padding is the tap target — 39 x 39, which is as much as a fixed 64px
+   bar gives a secondary control. The destination is spoken by the anchor's
+   aria-label, in the language being switched to. */
+.nav .lang-switch {
+  border-left: 1px solid var(--hair);
+  padding: 11px 6px 11px 16px;
+}
+.nav .lang-switch .globe { width: 17px; height: 17px; opacity: .72; }
+.nav .lang-switch:hover .globe { opacity: 1; }
+
+.foot .lang-switch { border-bottom: 0; }
+.foot .lang-switch span { border-bottom: 1px solid var(--hair-strong); }
+.foot .lang-switch:hover span { border-bottom-color: var(--red-text); }
+/* pushed to its own end of the footer where there is room for it */
+.foot .foot-lang { margin-left: auto; }
+
+/* ── type helpers ──────────────────────────────────────────────────────── */
+.kicker {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red-text);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.h1 { font-size: clamp(38px, 6.4vw, 62px); line-height: 1.01; letter-spacing: -.024em; }
+.h2 { font-size: clamp(26px, 3.6vw, 34px); line-height: 1.09; }
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+/* 20px under a 62px headline is a 3.1x drop to a size only 1.18x the body —
+   the sentence carrying the whole product promise read as a caption. */
+.lede { font-size: clamp(18px, 2.2vw, 23px); color: var(--ink-soft); line-height: 1.45; }
+.body { color: var(--ink-soft); line-height: 1.6; }
+.note {
+  font-family: var(--hand);
+  font-size: 21px;
+  line-height: 1.2;
+  color: var(--red-text);
+}
+
+/* ── store badges ──────────────────────────────────────────────────────── */
+.stores { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 6px 10px;
+  border-radius: 9px;
+  /* Apple's badge is the black artwork and Google's PNG is black too, so both
+     always sit on a light chip — including in dark mode, where the page ground
+     would otherwise swallow them. Neither mark is recoloured. */
+  background: #FBF8F1;
+  border: 1px solid rgba(31, 27, 23, .18);
+  text-decoration: none;
+}
+/* Match the black pill, not the file. Apple ships edge-to-edge artwork in a
+   119.66x40 box; Google ships a 646x250 PNG whose required clear space is
+   baked in as exactly 41px of transparent padding on all four sides, so its
+   mark is 168/250 = 67.2% of the file and at height:100% came out a third
+   shorter than Apple's, side by side, above the fold. Scaling to the mark and
+   letting the baked clear space hang over the chip's own padding puts Google's
+   ink 9.76px from the chip edge against Apple's 10px. Neither is recoloured,
+   redrawn or cropped, so both brand guidelines still hold. */
+.badge { --mark: 40px; }
+.badge img, .badge svg { display: block; height: var(--mark); width: auto; }
+.badge--play { padding-inline: 0; }
+.badge--play img {
+  height: calc(var(--mark) / .672);
+  margin-block: calc(var(--mark) * -.244);
+}
+/* only the real links lift — a placeholder that moves is a lie */
+a.badge:hover { transform: translateY(-2px); border-color: rgba(31, 27, 23, .34); }
+a.badge:active { transform: translateY(0); }
+.badge.is-disabled { opacity: .92; cursor: default; }
+.stores-note { font-size: 14px; font-style: italic; color: var(--ink-soft); margin-top: 12px; }
+
+/* ── hero ──────────────────────────────────────────────────────────────── */
+.hero { padding-block: clamp(36px, 6vw, 76px) clamp(44px, 7vw, 88px); }
+.hero > .wrap {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 4vw, 60px);
+}
+.hero-words { min-width: 0; flex: 1 1 auto; }
+.hero h1 { max-width: 16ch; text-wrap: balance; }
+.hero-chef {
+  /* Two things about this box. (a) His ink stops at the pointer tip — user x
+     243 once the 3.5deg lean swings it right — inside a viewBox that runs to
+     288, so a fifth of the box is empty on exactly the side facing the
+     headline and the flex gap rendered about twice as wide as it read. The
+     negative margin takes most of that back. (b) The words column stops
+     shrinking long before he does (the h1 clamp caps at 62px from 969px), so
+     through 641-939 he was falling away to a 164px figure beside a 345px
+     block. The floor holds him at a size that still answers the text. */
+  --chef-w: clamp(216px, 23vw, 310px);
+  display: block;
+  flex: none;
+  width: var(--chef-w);
+  margin-right: calc(var(--chef-w) * -.14);
+  height: auto;
+  overflow: visible;
+}
+.hero .lede { margin-top: 22px; max-width: 46ch; }
+.hero .stores { margin-top: 30px; }
+
+/* The teaching stance: he leans 3.5 degrees into the headline he is pointing
+   at. Static, so it survives reduced motion — only the taps and the nod stop. */
+.hero-chef.pose-point .p-fig {
+  transform-box: view-box;
+  transform-origin: 66px 239px;   /* user-space (126, 279) — between his feet */
+  transform: rotate(3.5deg);
+}
+
+/* He is alive while you read. Every origin here is a user-space point minus
+   the viewBox's own (60, 40); the arm's is the shoulder pivot Arm.astro
+   documents. All transform-only, all off under reduced motion, and each idle
+   is scoped to the pose it was drawn for so a wave loop can never drive a
+   pointing arm. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-chef .p-eyes {
+    transform-box: view-box; transform-origin: 60px 96px;
+    animation: blink 4.6s steps(1, end) infinite;
+  }
+  .hero-chef .p-hat {
+    transform-box: view-box; transform-origin: 59px 63px;
+    animation: hat-tip 6.4s cubic-bezier(.34, .1, .26, 1) infinite;
+  }
+
+  /* wave — the beckon, with the fingers curling on it */
+  .hero-chef.pose-wave .p-armR {
+    transform-box: view-box; transform-origin: 102px 178px;
+    animation: beckon 2.6s cubic-bezier(.34, .1, .26, 1) infinite;
+  }
+  .hero-chef.pose-wave .p-fing {
+    transform-box: view-box; transform-origin: 115px 131px;
+    animation: fing-curl .86s ease-in-out infinite;
+  }
+
+  /* point — two taps of the stick, and a nod on the same 3.4s bar so the head
+     agrees with the hand instead of drifting against it */
+  .hero-chef.pose-point .p-armR {
+    transform-box: view-box; transform-origin: 102px 178px;
+    animation: tap-tap 3.4s cubic-bezier(.4, 0, .3, 1) infinite;
+  }
+  .hero-chef.pose-point .p-head {
+    transform-box: view-box; transform-origin: 60px 172px;  /* the neck */
+    animation: teach-nod 3.4s ease-in-out infinite;
+  }
+}
+@keyframes blink { 0%, 95.5%, 100% { transform: scaleY(1); } 97% { transform: scaleY(.08); } }
+@keyframes hat-tip { 0% { transform: rotate(0); } 9% { transform: rotate(-7deg); } 18%, 100% { transform: rotate(0); } }
+@keyframes fing-curl {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  40%, 70% { transform: translate(-1.5px, 3.5px) rotate(-10deg); }
+}
+@keyframes beckon {
+  0%, 8% { transform: rotate(16deg); }
+  26% { transform: rotate(-7deg); }
+  44% { transform: rotate(14deg); }
+  62% { transform: rotate(-7deg); }
+  80%, 100% { transform: rotate(16deg); }
+}
+@keyframes tap-tap {
+  0%, 4% { transform: rotate(0deg); }
+  12% { transform: rotate(3.2deg); }
+  20% { transform: rotate(0deg); }
+  28% { transform: rotate(3.2deg); }
+  36%, 100% { transform: rotate(0deg); }
+}
+@keyframes teach-nod {
+  0%, 8% { transform: rotate(0deg); }
+  16% { transform: rotate(3deg); }
+  26% { transform: rotate(0deg); }
+  34% { transform: rotate(3deg); }
+  44%, 100% { transform: rotate(0deg); }
+}
+
+/* ── the phone ─────────────────────────────────────────────────────────── */
+.phone {
+  width: 100%;
+  max-width: 300px;
+  margin-inline: auto;
+  /* was the light theme's ink as a literal, which at night put a #1F1B17
+     bezel on #1C1916 paper at 1.02:1 — the one place the product appears
+     dissolved into the page */
+  background: var(--bezel);
+  border-radius: 34px;
+  padding: 9px;
+}
+.phone-in {
+  background: var(--card);
+  border-radius: 26px;
+  padding: 16px 15px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.phone .notch {
+  width: 54px; height: 5px;
+  border-radius: 9px;
+  background: var(--ink);
+  opacity: .2;
+  margin: 0 auto 14px;
+}
+.phone .p-lab { font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
+.phone .p-band {
+  margin-top: 14px;
+  height: 74px;
+  border: 1px solid var(--hair);
+  border-radius: 5px;
+  background: var(--wash);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.phone .p-band svg { width: 108px; height: auto; }
+.phone .p-dial { margin-top: 14px; display: flex; align-items: center; gap: 11px; }
+.phone .p-dial > svg { width: 44px; height: 44px; flex: none; }
+.phone .p-time { font-size: 22px; font-variant-numeric: tabular-nums; letter-spacing: .4px; }
+.phone .p-meta { font-size: 11.5px; font-style: italic; color: var(--ink-soft); }
+.phone .p-btn {
+  margin-top: 14px;
+  height: 36px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ══ the pot's journey ═════════════════════════════════════════════════ */
+/* "What it does" on one side, the app itself on the other. This is the only
+   place a visitor sees the product, so it sits at the moment they ask. */
+.journey-head { scroll-margin-top: calc(var(--nav-h) + 14px); padding-block: clamp(34px, 5vw, 66px) clamp(18px, 3vw, 34px); }
+.journey-head > .wrap { display: flex; align-items: center; gap: clamp(28px, 5vw, 76px); }
+.journey-head .jh-words { flex: 1 1 auto; min-width: 0; }
+.journey-head .h2 { max-width: 20ch; margin-top: 8px; }
+.journey-head .jh-what { margin-top: 14px; max-width: 52ch; font-size: 16px; }
+.journey-head .phone { flex: none; width: 268px; margin-inline: 0; }
+
+.journey { position: relative; }
+
+/* the dotted red-pencil path — one sine, drawn by the script */
+.path {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+.path path {
+  fill: none;
+  stroke: var(--red-rule);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-dasharray: 1 13;
+}
+
+/* the pot is pinned at a fixed height and the page runs past it */
+.potlane {
+  /* One number drives the pot and everything that has to hit it. The mouth sits
+     32 of the pot's 132 units above its box centre, so --mouth is -32/160 × width. */
+  --pot-w: 156px;
+  --mouth: -31.2px;
+  position: sticky;
+  /* vh, not %: a percentage here would resolve against .journey's height —
+     the pin would move as the feature copy got longer. */
+  top: 42vh;
+  height: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+.pot-rig {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--pot-w);
+  transform:
+    translate(calc(-50% + var(--px, 0) * 1px), -50%)
+    rotate(calc(var(--px, 0) * .06deg));
+}
+.pot-rig > svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+/* An ingredient in flight: thrown from its card, spinning, into the pot.
+   The landing point is the pot's MOUTH, which is two things away from the lane
+   centre — the pot's sideways drift (--px) and the 26-of-132 offset from the
+   pot box's centre up to the rim. Both are weighted by --k so only the landing
+   moves; the throw still starts at the card. */
+.toss {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 54px;
+  transform:
+    translate(-50%, -50%)
+    translate(calc(var(--k, 0) * var(--px, 0) * 1px), calc(var(--k, 0) * var(--mouth, -31.2px)))
+    translate(calc((1 - var(--k, 0)) * var(--fx, 0) * 1px), calc((1 - var(--k, 0)) * -190px))
+    rotate(calc((1 - var(--k, 0)) * var(--fr, 200) * 1deg))
+    scale(calc(1 + var(--sq, 0) * .2), calc(1 - var(--sq, 0) * .22));
+  opacity: calc(var(--k, 0) * 2.4);
+  pointer-events: none;
+}
+.toss.landed { opacity: 0; }
+.toss > svg { width: 100%; height: auto; display: block; }
+
+/* the splash ring at the moment of impact */
+.splash {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 112px;
+  transform: translate(-50%, -50%) translate(calc(var(--px, 0) * 1px), var(--mouth, -31.2px)) scale(calc(.45 + var(--sp, 0) * 1.05));
+  opacity: calc(var(--sp, 0) * .75);
+  pointer-events: none;
+}
+.splash > svg { width: 100%; height: auto; display: block; }
+
+/* the cards, alternating sides */
+.row { display: flex; align-items: center; min-height: 330px; }
+.row.right { justify-content: flex-end; }
+.card {
+  position: relative;
+  z-index: 6;
+  width: 360px;
+  max-width: 100%;
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  padding: 26px 28px 28px;
+  /* --in is written by the script, 0 → 1, as the card comes up the screen.
+     The default of 1 is the answer for reduced motion and for no script at
+     all: the card is simply there. */
+  opacity: var(--in, 1);
+  transform: translateY(calc((1 - var(--in, 1)) * 20px));
+}
+html.js .card { --in: 0; }
+.card .eyebrow { display: block; }
+.card h3 { font-size: 24px; line-height: 1.14; margin-top: 9px; }
+.card .body { margin-top: 12px; font-size: 16px; }
+.card .note { margin-top: 16px; }
+.card .n {
+  font-variant-numeric: tabular-nums;
+  color: var(--red-text);
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+/* ── the finale ────────────────────────────────────────────────────────── */
+.finale {
+  margin-top: clamp(30px, 5vw, 60px);
+  padding-block: clamp(40px, 6vw, 80px) clamp(44px, 6vw, 84px);
+  text-align: center;
+}
+/* This line closes the whole scroll story; at the shared .h2 size it was set
+   no larger than "What it does" two screens above it. */
+.finale .h2 { margin-top: 18px; font-size: clamp(30px, 4.6vw, 46px); }
+.finale .lede { margin-top: 10px; }
+.finale .stores { justify-content: center; margin-top: 28px; }
+.finale .stores-note { text-align: center; }
+
+.scene {
+  position: relative;
+  width: min(360px, 84vw);
+  margin-inline: auto;
+  aspect-ratio: 228 / 250;
+}
+.scene > svg.chef { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+/* The chef's art sits at x 50..200 of a 60..288 viewBox, so his centre is 28%
+   of the scene, not 50%. The pot is sized and dropped so its rim clears his
+   chin and its handles meet his hands. */
+.scene .pot-hold {
+  position: absolute;
+  left: 28%;
+  bottom: 1.6%;
+  width: 44%;
+  transform: translateX(-50%);
+}
+.scene .pot-hold > svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+.scene .sparks {
+  position: absolute;
+  inset: 0;
+  opacity: var(--spark, 0);
+  transform: scale(calc(.78 + var(--spark, 0) * .22));
+  transform-origin: 28% 66%;
+  pointer-events: none;
+}
+.scene .sparks > svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+/* clear of his face — he holds it out, rather than in front of his own chin */
+.scene .served {
+  position: absolute;
+  left: 70%;
+  bottom: 26%;
+  width: 32%;
+  transform:
+    translateX(-50%)
+    translateY(calc(26px - var(--dish, 0) * 46px))
+    scale(calc(.55 + var(--dish, 0) * .45));
+  opacity: var(--dish, 0);
+  pointer-events: none;
+}
+.scene .served > svg { width: 100%; height: auto; display: block; }
+
+/* Each landed ingredient is revealed by the script. `js` is set in the head
+   before first paint (Base.astro), so the pot starts empty for anyone who will
+   get the choreography — and starts FULL, which is the end state, for anyone
+   who will not: no script, or reduced motion. */
+.rest { opacity: 0; }
+html:not(.js) .rest { opacity: 1; }
+/* The same rescue for the rest of the finale. --dish and --grin are written
+   only by the script, so with JavaScript off the page's last frame was a chef
+   holding nothing and not smiling, directly under "Dinner is ready when you
+   are." The end state is the right answer for anyone who will not see the
+   choreography — which is exactly what the script's own reduced-motion branch
+   already decides. */
+html:not(.js) .scene { --dish: 1; --grin: 1; }
+/* The page draws the pot TWICE — once in the lane, once in his hands — so
+   there are eight of these and the script only ever drives the first four.
+   The second pot is the finished one: the lid has to come off something. */
+.scene .rest { opacity: 1; }
+
+/* the lid drops on, rattles, lifts off */
+.lid-rig {
+  transform: translateY(calc((1 - var(--lid, 0)) * -46%));
+  opacity: var(--lid, 0);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.rattle .lid-shake { animation: rattle .16s linear infinite; }
+@keyframes rattle {
+  0%   { transform: translate(0, 0) rotate(0); }
+  25%  { transform: translate(-2.5px, 1px) rotate(-1.6deg); }
+  50%  { transform: translate(2px, -1.5px) rotate(1.3deg); }
+  75%  { transform: translate(-1.5px, -1px) rotate(1deg); }
+  100% { transform: translate(0, 0) rotate(0); }
+}
+
+/* ── the ochre call-to-action band ─────────────────────────────────────── */
+/* .cta is the band's PAINT; .finale is its spacing. They are the same element
+   (<section class="finale cta">), and padding-block was declared in both —
+   .cta later in the file, so it won and the page's climax ran 25% tighter
+   than the rule written for it. Only one of them sets padding now. */
+.cta {
+  background: var(--brand-ochre);
+  color: var(--brand-ink);
+}
+.cta .h2 { color: var(--brand-ink); max-width: 22ch; }
+.cta .lede { color: rgba(31, 27, 23, .9); margin-top: 10px; max-width: 42ch; }
+.cta .stores { margin-top: 26px; }
+.cta .stores-note { color: rgba(31, 27, 23, .88); }
+.cta .kicker { color: var(--brand-ink); }
+/* The band pins the tokens that FLIP, and only those. It used to re-declare
+   the chef's eleven --fg-* colours as well, which was not merely redundant —
+   they are frozen at :root and never redefined in either dark guard — but a
+   trap: when the painted chef arrives and his terracotta changes at :root,
+   every chef on the site would follow except the one standing on this band,
+   which is the largest drawing of him on the page. */
+.cta {
+  --prop-line: #2E2A26;
+  --fg-pot: #8A6248; --fg-pot2: #584134; --fg-pot3: #3E2E24; --fg-steel: #C8BFB1;
+  --card: #FBF8F1; --dish-a: #92351F; --dish-b: #5C7A3B; --dish-c: #B98A2E;
+  --hair: rgba(31, 27, 23, .2);
+  /* The comment at the top of this file says everything set on this band is a
+     literal. These three were still flipping with the theme: the served dish
+     changed colour on a band that does not, and the highlighter was ochre on
+     ochre — dragging over the closing line selected nothing you could see. */
+  --ochre: #E9C46A; --ochre-wash: rgba(233, 196, 106, .45);
+  --select: rgba(31, 27, 23, .2);
+}
+
+/* ── footer ────────────────────────────────────────────────────────────── */
+.foot { border-top: 1px solid var(--rule); }
+.foot > .wrap {
+  padding-block: 26px 34px;
+  display: flex;
+  gap: 8px 18px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}
+.foot a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--hair-strong); }
+.foot a:hover { color: var(--red-text); border-bottom-color: var(--red-text); }
+.foot .sep { opacity: .45; }
+
+/* ── 404 ───────────────────────────────────────────────────────────────── */
+.notfound { padding-block: clamp(56px, 10vw, 120px) clamp(64px, 12vw, 150px); }
+.notfound .lede { margin-top: 14px; max-width: 46ch; }
+.notfound .nf-links { margin-top: 26px; font-size: 17px; }
+.notfound .nf-links a { text-underline-offset: 3px; }
+
+/* ── legal pages ───────────────────────────────────────────────────────── */
+.legal { padding-block: clamp(32px, 5vw, 64px) clamp(48px, 7vw, 88px); }
+/* 68ch is 636px, which against this prose is 90 characters a line — well past
+   the 60-75 the eye tracks over two and a half thousand words. 54ch is 71.
+   Centred, because a 505px column left-aligned inside a 1044px wrap leaves
+   539px of empty paper down one side and reads as a page that slipped. */
+.legal .doc { max-width: 54ch; margin-inline: auto; }
+.legal .doc h1 { font-size: clamp(32px, 5vw, 44px); line-height: 1.04; }
+/* Every heading in these documents has an id, so every one of them can be
+   linked to — from the app, from an email, from a support reply. Without this
+   the target lands under the 64px sticky bar and the reader sees the wrong
+   paragraph. */
+.legal .doc h2, .legal .doc h3 { scroll-margin-top: calc(var(--nav-h) + 20px); }
+.legal .doc h2 {
+  font-size: 23px;
+  margin-top: 40px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--hair);
+}
+.legal .doc h3 { font-size: 19px; margin-top: 26px; }
+/* these are the documents, not supporting copy — they get the primary ink */
+.legal .doc p, .legal .doc li { color: var(--ink); }
+.legal .doc p { margin-top: 14px; }
+.legal .doc ul, .legal .doc ol { margin-top: 14px; padding-left: 22px; }
+.legal .doc li { margin-top: 7px; }
+.legal .doc strong { color: var(--ink); font-weight: 600; }
+.legal .doc a { color: var(--red-text); }
+/* Each document opens with TWO lines the handoff asks to keep visible — "Last
+   updated" and "Effective" — and the support page opens with a lede instead,
+   which says so by carrying the class. */
+.legal .doc h1 + p:not(.lede),
+.legal .doc h1 + p:not(.lede) + p {
+  font-size: 14px; font-style: italic; color: var(--ink-soft); margin-top: 8px;
+}
+.legal .doc h1 + p:not(.lede) strong,
+.legal .doc h1 + p:not(.lede) + p strong { color: var(--ink-soft); font-weight: 600; }
+
+/* ── the handed-over legal documents ───────────────────────────────────── */
+/* The app opens these two in an in-app browser sheet and legal/README.md §1.2
+   is specific about them: static, readable with JavaScript off, readable at
+   390px, light and dark safe, no third-party anything, the summary box kept
+   as a box, the bold lead-ins kept, and every anchored block reachable
+   without the sticky bar covering it. */
+
+.legal .doc blockquote {
+  margin: 22px 0 0;
+  padding: 18px 22px;
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-left: 3px solid var(--red);
+  border-radius: 8px;
+}
+.legal .doc blockquote > p:first-child { margin-top: 0; }
+
+/* Five-column tables in a 54ch column, so each scrolls on its own and the
+   page body never does. tabindex makes the scroller keyboard-reachable. */
+.legal .doc .table-scroll {
+  overflow-x: auto;
+  margin-top: 16px;
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  /* the column, not the viewport: a container wider than a centred measure
+     would hang off one side of it */
+  max-width: 100%;
+}
+.legal .doc .table-scroll:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.legal .doc table { border-collapse: collapse; width: 100%; min-width: 540px; font-size: 15px; }
+.legal .doc th, .legal .doc td {
+  text-align: left; vertical-align: top; padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.legal .doc thead th {
+  font-size: 11.5px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--ink-soft); font-weight: 600; background: var(--wash);
+}
+.legal .doc tbody tr:last-child td { border-bottom: 0; }
+
+/* Five anchors sit above bold paragraphs rather than headings (Privacy 11,
+   Terms 6), so they are empty inline elements. A block box lets them carry
+   the same scroll offset the headings have, which is what makes
+   /privacy#deleting-your-data land on the right paragraph rather than under
+   the bar. That one is the deletion path a store reviewer follows. */
+.legal .doc a[id]:empty { display: block; height: 0; scroll-margin-top: calc(var(--nav-h) + 20px); }
+
+/* the Turkish routes carry the English document until the translation lands */
+.legal .doc .doc-notice {
+  margin: 0 0 6px;
+  padding: 14px 18px;
+  background: var(--wash);
+  border: 1px dashed var(--hair-strong);
+  border-radius: 8px;
+  font-size: 15px;
+}
+.legal .doc .lede { margin-top: 14px; }
+
+/* ── support ───────────────────────────────────────────────────────────── */
+/* Each question is a top-level h2 so a search engine can rank the answer on
+   its own, but eight ruled headings down one column reads as a form, so the
+   rule the legal documents use is taken back off here. */
+.legal .doc .support-contact {
+  margin-top: 22px;
+  padding: 14px 18px;
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  color: var(--ink);
+}
+.legal .doc .support-eyebrow { margin-top: 40px; }
+.legal .doc .faq { margin-top: 26px; }
+.legal .doc .faq h2 {
+  font-size: 20px;
+  margin-top: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+  color: var(--ink);
+}
+.legal .doc .faq p { margin-top: 8px; }
+.legal .doc .faq-more { margin-top: 7px; font-size: 15px; }
+.legal .doc .faq-more a { text-underline-offset: 3px; }
+.legal .doc .support-stuck {
+  margin-top: 40px;
+  padding-top: 22px;
+  border-top: 1px solid var(--hair);
+}
+.legal .doc .support-also { margin-top: 10px; font-size: 15px; color: var(--ink-soft); }
+
+/* ══ responsive ════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero h1 { max-width: 14ch; }
+  .hero .lede { max-width: 44ch; }
+  /* the phone drops under the heading rather than squeezing beside it */
+  .journey-head > .wrap { flex-direction: column; align-items: stretch; gap: clamp(22px, 5vw, 34px); }
+  .journey-head .h2 { max-width: 24ch; }
+  .journey-head .phone { width: 100%; max-width: 288px; margin-inline: auto; }
+}
+
+@media (max-width: 640px) {
+  .hero > .wrap { flex-direction: column; align-items: flex-start; gap: 6px; }
+  /* Stacked he has a line to himself, so he is sized against the screen
+     rather than pinned to one number — and 216 is the desktop clamp's own
+     floor, so nothing steps at the 640/641 boundary. */
+  .hero-chef { --chef-w: min(216px, 46vw); margin-right: 0; margin-left: -10px; }
+  .hero h1 { max-width: none; }
+}
+
+/* Phone: one column, the pot docks under the nav in its own band, and the
+   story is unchanged — same four throws, same landing, same finale. */
+@media (max-width: 1099px) {
+  .journey { padding-top: 168px; }
+  .potlane { top: calc(var(--nav-h) + 52px); --pot-w: 120px; --mouth: -24px; }
+  .potlane::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -52px;
+    width: 100vw;
+    height: 142px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, var(--paper) 58%, transparent);
+    pointer-events: none;
+  }
+  .toss { width: 44px; }
+  .splash { width: 92px; }
+  .path { width: 150px; opacity: .8; }
+  /* Capped, not full-bleed. A stretched card at 1099px is 1007px wide and
+     sets a 140-character line against the 41 the 360px desktop card was drawn
+     for. And `justify-content: stretch` — which flex reads as flex-start —
+     was also cancelling .row.right, so the left/right alternation the four
+     throws are aimed at vanished across the whole 640-1099 band while the
+     ingredients kept flying in from alternating sides. Under ~560px the box
+     is narrower than the cap and it goes full width by itself. */
+  .row { min-height: 0; margin-bottom: 28px; }
+  .card { width: 100%; max-width: 520px; padding: 22px 22px 24px; }
+  .card h3 { font-size: 22px; }
+}
+
+@media (max-width: 760px) {
+  .potlane { --pot-w: 96px; --mouth: -19.2px; }
+  .toss { width: 40px; }
+  .splash { width: 78px; }
+  .path { width: 132px; }
+  .scene { width: min(300px, 78vw); }
+}
+
+@media (max-width: 420px) {
+  /* The Turkish labels are ~25% wider than the English ones, and the bar
+     cannot wrap — it is a fixed 64px band. These numbers are measured, not
+     guessed: `npm run verify` reproduces the row from the shipped woff2 and
+     fails if any width leaves under 8px of daylight. Change one, re-run it. */
+  .nav > .wrap { gap: 10px; }
+  .nav-right { gap: 8px; }
+  .nav ul { gap: 8px; }
+  .nav a.link { font-size: 14px; }
+  .nav .lang-switch { padding: 11px 4px 11px 10px; }
+  .nav .lang-switch .globe { width: 16px; height: 16px; }
+  .nav .brand .wm { font-size: 19px; }
+  .foot .foot-lang { margin-left: 0; }
+  .journey { padding-top: 156px; }
+  .potlane { --pot-w: 84px; --mouth: -16.8px; }
+  .toss { width: 34px; }
+  .badge { height: 46px; --mark: 34px; }
+  .stores { gap: 10px; }
+  .card { padding: 20px 18px 22px; }
+  .card .note { font-size: 19px; }
+}
+
+/* ══ print — these are terms; people print them ═══════════════════════ */
+/* A legal document that prints badly is a legal document nobody keeps a copy
+   of. Chrome and Safari both honour this on Save as PDF. */
+@media print {
+  :root { --paper: #fff; --card: #fff; --ink: #000; --ink-soft: #222; --red-text: #000; }
+  .nav, .foot, .skip, .journey, .journey-head, .finale, .hero { display: none; }
+  body { background: #fff; color: #000; font-size: 11pt; line-height: 1.45; }
+  .legal { padding-block: 0; }
+  .legal .doc { max-width: none; }
+  .legal .doc h1 { font-size: 20pt; }
+  .legal .doc h2 { font-size: 13pt; margin-top: 18pt; break-after: avoid; }
+  .legal .doc h3 { font-size: 11.5pt; break-after: avoid; }
+  .legal .doc p, .legal .doc li { orphans: 3; widows: 3; }
+  /* a printed page cannot be clicked, so the address has to be on it */
+  .legal .doc a[href^="http"]::after,
+  .legal .doc a[href^="mailto"]::after { content: " (" attr(href) ")"; font-size: .85em; }
+}
+
+/* ══ reduced motion — no choreography, the end states stand ════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .toss { display: none; }
+  .splash { opacity: 0; }
+  .lid-rig { display: none; }
+  .scene .sparks { opacity: 0; }
+  .scene { --dish: 1; --grin: 1; }
+  .rattle .lid-rig { animation: none; }
+  * { scroll-behavior: auto !important; }
+}

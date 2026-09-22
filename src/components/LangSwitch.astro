@@ -1,0 +1,29 @@
+---
+/**
+ * The language switch, in one place so the header and the footer can never
+ * disagree about where it goes. It always points at THE SAME PAGE in the
+ * other language — /privacy → /tr/privacy — not at the other home page.
+ *
+ * `label` picks what is written next to the globe:
+ *   'icon' — the globe alone, in the header, where the bar is a fixed 64px
+ *            with no room to wrap. The anchor still has an accessible name:
+ *            aria-label carries "Switch to English" / "Türkçe’ye geç", in the
+ *            language being switched TO, which is the convention.
+ *   'name' — the language in its own tongue, in the footer, which has room
+ *            and is the second place people look.
+ */
+import { copy, counterpart, href, other, localeName, type Locale } from '../lib/copy';
+
+interface Props { lang: Locale; label?: 'icon' | 'name'; class?: string }
+const { lang, label = 'icon', class: cls = '' } = Astro.props;
+const t = copy[lang];
+const to = other(lang);
+
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+const rest = lang === 'en' ? here : here.replace(/^\/tr/, '') || '/';
+---
+<a class={['lang-switch', cls].filter(Boolean).join(' ')} href={href(to, counterpart(rest))} lang={to} hreflang={to}
+   aria-label={t.a11y.langSwitch} title={localeName[to]}>
+  <svg class="globe" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><use href="#globe"/></svg>
+  {label === 'name' && <span>{localeName[to]}</span>}
+</a>

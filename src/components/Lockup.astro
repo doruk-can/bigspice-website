@@ -1,0 +1,14 @@
+---
+/**
+ * The lock-up. "Bıg" is set with the Turkish dotless ı (U+0131) so there is no
+ * tittle to fight — the toque IS the tittle.
+ *
+ * The anchor is a zero-size inline-block: vertical-align:baseline makes its box
+ * bottom the text baseline, and margin-left:-50% resolves against the ı's own
+ * advance, so the hat lands on the stem centre at any size and survives a web
+ * font failing to load.
+ */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<span class={`wm ${cls}`}>B<span class="dl">ı<span class="bl"><svg class="tq" viewBox="62 44 118 79" aria-hidden="true" focusable="false"><use href="#tq"/></svg></span></span>g&nbsp;Spice</span>

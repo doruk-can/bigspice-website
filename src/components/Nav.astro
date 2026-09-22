@@ -1,0 +1,33 @@
+---
+import Lockup from './Lockup.astro';
+import LangSwitch from './LangSwitch.astro';
+import { copy, href, type Locale } from '../lib/copy';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = copy[lang];
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const links = [
+  { to: href(lang, '/'), label: t.nav.home },
+  { to: href(lang, '/privacy'), label: t.nav.privacy },
+  { to: href(lang, '/terms'), label: t.nav.terms },
+];
+---
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href={href(lang, '/')} aria-label={t.a11y.home}><Lockup /></a>
+    {/* The three pages are one list; the language switch is not a fourth
+        page, so it sits outside that list, past a hairline, at the far end. */}
+    <div class="nav-right">
+      <ul>
+        {links.map((item) => (
+          <li>
+            <a class="link" href={item.to} aria-current={here === item.to ? 'page' : undefined}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+      <LangSwitch lang={lang} />
+    </div>
+  </div>
+</nav>

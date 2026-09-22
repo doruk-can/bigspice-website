@@ -1,0 +1,46 @@
+---
+/**
+ * THE CHEF — one component, four swappable layer files.
+ *
+ *   chef/Body.astro   torso · apron · belt · left arm · feet
+ *   chef/Arm.astro    the right arm, pivot (162, 218) — and the pointer stick
+ *   chef/Face.astro   head · moustache · toque · specs
+ *   chef/Lid.astro    the pot lid (lives with the pot, listed here because it
+ *                     is the fourth piece of art the illustrator delivers)
+ *
+ * The part names are the app's own rig (p-fig · p-torso · p-armL/p-handL ·
+ * p-armR/p-fing · p-feet/p-footL/p-footR · p-head/p-eyes/p-brows/p-tips/
+ * p-mouth/p-hat/p-specs), so a pose or an idle written for the app drops
+ * straight onto this figure.
+ *
+ * Nothing outside these four files draws him, so replacing the vector
+ * stand-in with the painted illustration is four file swaps and no code
+ * change. Sizes and pivots: README → "Handing over the illustrated chef".
+ */
+import Body from './chef/Body.astro';
+import Arm from './chef/Arm.astro';
+import Face from './chef/Face.astro';
+
+interface Props {
+  /** wave = the greeting · point = teaching, with the stick · hold = at the pot */
+  pose?: 'wave' | 'point' | 'hold';
+  /** render the delighted face as a second layer, faded in by --grin */
+  grin?: boolean;
+  class?: string;
+}
+const { pose = 'wave', grin = false, class: cls = '' } = Astro.props;
+---
+{/* the pose lands on the root as `pose-wave` / `pose-point` / `pose-hold`, so
+    each idle in global.css belongs to exactly one pose and they never stack */}
+<svg class={`chef pose-${pose} ${cls}`} viewBox="60 40 228 250" aria-hidden="true" focusable="false">
+  <g class="p-fig">
+    <Body arm={pose === 'wave' ? 'down' : pose} />
+    <Arm pose={pose} />
+    <Face mood="calm" brows={pose === 'point' ? 'raised' : 'level'} />
+    {grin && (
+      <g class="p-grin" style="opacity:var(--grin,0)">
+        <Face mood="grin" />
+      </g>
+    )}
+  </g>
+</svg>

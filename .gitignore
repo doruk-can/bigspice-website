@@ -1,0 +1,35 @@
+node_modules/
+
+# `dist*/` and not `dist/`: a failed `rm -rf dist` on macOS can leave a
+# "dist 2" or "dist 3" beside it, and those are build output too — one of
+# them was 23 files of a day-old build, about to be committed.
+dist*/
+.astro/
+shots/
+scripts/.fonts-cache/
+chrome-headless-shell/
+.DS_Store
+
+# macOS duplicate-file artifacts. A failed copy or delete leaves "Face 2.astro"
+# beside Face.astro — and the one that turned up here was the version from
+# BEFORE the face-wash fix, so anyone reading it would have read the bug.
+# Nothing in this project is ever meant to have a space and a digit like this.
+* [0-9].*
+* [0-9]/
+
+# scratch files from the no-browser visual checks (rendering the chef, the
+# badges and the share card to PNG to actually look at them)
+*.tmp.*
+.*.tmp.*
+*.log
+.env
+.env.*
+local-preview*/
+
+# The legal handoff note. Its own table says "No. Never publish it", and it
+# lists every unfixed legal risk before launch, the App Store guidelines that
+# could reject the build, and internal file paths — while the documents it
+# accompanies are under a trade-secrecy rule that names no vendor anywhere.
+# A public repo publishes it. It stays on disk; it does not ship.
+# If the repo is ever private, delete these two lines.
+legal/README.md

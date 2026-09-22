@@ -1,0 +1,24 @@
+---
+import LangSwitch from './LangSwitch.astro';
+import { SITE } from '../lib/site.mjs';
+import { copy, href, type Locale } from '../lib/copy';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = copy[lang];
+---
+<footer class="foot">
+  <div class="wrap">
+    <span>{t.footer.rights}</span>
+    <span class="sep" aria-hidden="true">·</span>
+    <a href={href(lang, '/support')}>{t.nav.support}</a>
+    <span class="sep" aria-hidden="true">·</span>
+    <a href={href(lang, '/privacy')}>{t.nav.privacy}</a>
+    <span class="sep" aria-hidden="true">·</span>
+    <a href={href(lang, '/terms')}>{t.nav.terms}</a>
+    <span class="sep" aria-hidden="true">·</span>
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    {/* the second place people look for a language, named in its own tongue */}
+    <LangSwitch lang={lang} label="name" class="foot-lang" />
+  </div>
+</footer>

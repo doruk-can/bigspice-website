@@ -1,0 +1,34 @@
+# Cloudflare Pages reads this file verbatim. Two jobs.
+#
+# 1. CACHING. The font files have stable names — `npm run fonts` writes the
+#    same five paths every time — so without an explicit rule Cloudflare's
+#    default sends a repeat visitor back to revalidate 190 KB of woff2 that
+#    has not changed. Astro's own _astro/* names carry a content hash, so they
+#    can be held forever too. Page HTML is deliberately left alone: it must
+#    revalidate, or a deploy takes a day to reach anyone.
+#
+#    Core Web Vitals is a ranking signal and fonts are on the critical path,
+#    which makes this an SEO line as much as a performance one.
+#
+# 2. HEADERS a static marketing site should send anyway. None of them change
+#    what the page does; they just close doors nothing here needs open.
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/badges/*
+  Cache-Control: public, max-age=604800
+
+/og.png
+  Cache-Control: public, max-age=86400
+/og-tr.png
+  Cache-Control: public, max-age=86400
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()

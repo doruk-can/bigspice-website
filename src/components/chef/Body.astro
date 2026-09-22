@@ -1,0 +1,66 @@
+---
+/**
+ * LAYER — body: torso, apron, belt, left arm, feet.
+ * Chef space is viewBox "60 40 228 250". Shoulders sit at y ≈ 214.
+ *
+ * Swapping in painted art: replace the contents with
+ * <image href="/chef/body.png" x="60" y="188" width="180" height="100"/>.
+ * See README → "Handing over the illustrated chef" for sizes and pivots.
+ */
+interface Props { arm?: 'down' | 'point' | 'hold' }
+const { arm = 'down' } = Astro.props;
+---
+<g class="p-body">
+  <g class="p-torso">
+    <path d="M80 214 L166 212 C168 238 156 262 136 266 L110 267 C90 264 78 240 80 214 Z" fill="var(--fg-coat)" transform="translate(-3 2)"/>
+    <path d="M80 212 L168 210 C170 238 158 263 136 267 L110 268 C88 265 78 240 80 212 M84 220 L164 218" fill="none" stroke="var(--fg-line)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M102 218 C100 238 102 256 108 263 L138 262 C144 255 146 236 144 216 Z" fill="var(--fg-apron)" transform="translate(3 -2)"/>
+    <path d="M102 218 C100 238 102 256 108 263 L138 262 C144 255 146 236 144 216 Z" fill="none" stroke="var(--fg-line)" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M106 218 L110 209 M140 216 L136 208" fill="none" stroke="var(--fg-line)" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M84 252 L162 250 L161 261 L86 263 Z" fill="var(--fg-belt)" transform="translate(1 0)"/>
+    <path d="M84 252 L162 250 L161 261 L86 263 Z" fill="none" stroke="var(--fg-line)" stroke-width="2.2" stroke-linejoin="round"/>
+    <circle cx="123" cy="256" r="7" fill="var(--fg-btn)"/>
+    <circle cx="123" cy="256" r="7" fill="none" stroke="var(--fg-line)" stroke-width="2"/>
+  </g>
+
+  <g class="p-armL">
+    {arm === 'hold' && (
+      <>
+        <path d="M84 220 C80 228 78 234 78 238" fill="none" stroke="var(--fg-line)" stroke-width="2.6" stroke-linecap="round"/>
+        <g class="p-handL">
+          <ellipse cx="76" cy="242" rx="6.5" ry="7" fill="var(--fg-skin)"/>
+          <ellipse cx="76" cy="242" rx="6.5" ry="7" fill="none" stroke="var(--fg-line)" stroke-width="2.2"/>
+        </g>
+      </>
+    )}
+    {arm === 'point' && (
+      <>
+        {/* Hanging, with the hand BELOW the belt. The reference pose put it on
+            the hip, which against this wide coat closed a loop that read as a
+            mug handle — coat as cup, apron as body, feet as saucer. Dropping
+            the hand clear of the torso opens the loop and he is a chef again.
+            Body.astro's `down` arm has a milder version of the same problem;
+            worth the same treatment when the painted art arrives. */}
+        <path d="M84 220 C74 232 71 248 74 262" fill="none" stroke="var(--fg-line)" stroke-width="2.6" stroke-linecap="round"/>
+        <g class="p-handL">
+          <ellipse cx="73" cy="266" rx="6.5" ry="6" fill="var(--fg-skin)" transform="rotate(12 73 266)"/>
+          <ellipse cx="73" cy="266" rx="6.5" ry="6" fill="none" stroke="var(--fg-line)" stroke-width="2.2" transform="rotate(12 73 266)"/>
+        </g>
+      </>
+    )}
+    {arm === 'down' && (
+      <>
+        <path d="M84 220 C74 228 72 240 78 248" fill="none" stroke="var(--fg-line)" stroke-width="2.6" stroke-linecap="round"/>
+        <g class="p-handL">
+          <ellipse cx="81" cy="251" rx="6" ry="6.5" fill="var(--fg-skin)"/>
+          <ellipse cx="81" cy="251" rx="6" ry="6.5" fill="none" stroke="var(--fg-line)" stroke-width="2.2"/>
+        </g>
+      </>
+    )}
+  </g>
+
+  <g class="p-feet">
+    <g class="p-footL"><path d="M104 274 a11 5 0 1 0 22 0" fill="var(--fg-skin)" stroke="var(--fg-line)" stroke-width="2.2"/></g>
+    <g class="p-footR"><path d="M126 274 a11 5 0 1 0 22 0" fill="var(--fg-skin)" stroke="var(--fg-line)" stroke-width="2.2"/></g>
+  </g>
+</g>

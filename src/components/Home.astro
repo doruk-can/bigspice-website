@@ -1,0 +1,267 @@
+---
+/**
+ * The home page, once, for both languages. src/pages/index.astro and
+ * src/pages/tr/index.astro are thin wrappers that pass `lang` and the metadata.
+ */
+import Chef from './Chef.astro';
+import Pot from './Pot.astro';
+import PhoneMock from './PhoneMock.astro';
+import StoreButtons from './StoreButtons.astro';
+import { copy, type Locale } from '../lib/copy';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = copy[lang];
+const features = t.journey.features;
+
+/* Which ingredient each feature throws, and from which side. The pot reads
+   left → right → left → right down the page, so the throw comes from the side
+   the card is on. */
+const THROWS = [
+  { side: 'left',  dir: -1, ing: 'ing-tomato', fr: 220 },
+  { side: 'right', dir: 1,  ing: 'ing-pepper', fr: -200 },
+  { side: 'left',  dir: -1, ing: 'ing-onion',  fr: 260 },
+  { side: 'right', dir: 1,  ing: 'ing-herbs',  fr: -240 },
+] as const;
+---
+<!-- ── hero ──────────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="wrap">
+      <Chef pose="point" class="hero-chef" />
+      <div class="hero-words">
+        <p class="kicker">{t.hero.kicker}</p>
+        <h1 class="h1">{t.hero.title}</h1>
+        <p class="lede">{t.hero.sub}</p>
+        <StoreButtons lang={lang} pricing />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── the pot's journey ─────────────────────────────────────────────── -->
+  <section class="journey-head" id="features" tabindex="-1">
+    <div class="wrap">
+      <div class="jh-words">
+        <p class="eyebrow">{t.journey.heading}</p>
+        <h2 class="h2">{t.journey.lede}</h2>
+        <p class="body jh-what">{t.journey.what}</p>
+      </div>
+      {/* the one place the app itself is visible. Drawn, not screenshotted, so
+          it never goes stale against a build and costs nothing to load. */}
+      <PhoneMock lang={lang} />
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="journey" data-journey>
+
+      <svg class="path" data-path aria-hidden="true" focusable="false" preserveAspectRatio="none">
+        <path data-snake></path>
+      </svg>
+
+      <div class="potlane" data-potlane role="img" aria-label={t.a11y.journey}>
+        <div class="pot-rig" data-pot><Pot /></div>
+        <div class="splash" data-splash aria-hidden="true">
+          <svg viewBox="0 0 100 100" focusable="false"><use href="#splash-ring"/></svg>
+        </div>
+        {THROWS.map((t, i) => (
+          <span class="toss" data-toss={i + 1} data-side={t.dir} style={`--fx:${t.dir * 300};--fr:${t.fr}`}>
+            <svg viewBox="0 0 64 64" focusable="false"><use href={`#${t.ing}`}/></svg>
+          </span>
+        ))}
+      </div>
+
+      {features.map((f, i) => (
+        <div class={`row ${THROWS[i].side === 'right' ? 'right' : ''}`}>
+          <article class="card" data-card={i + 1}>
+            <span class="eyebrow"><span class="n">{f.n}</span>{f.eyebrow}</span>
+            <h3>{f.title}</h3>
+            <p class="body">{f.body}</p>
+            <p class="note">{f.note}</p>
+          </article>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- ── the finale: he takes the pot, and dinner is served ────────────── -->
+  <section class="finale cta" data-finale>
+    <div class="wrap">
+      <div class="scene" data-scene>
+        <Chef pose="hold" grin />
+        <div class="pot-hold"><Pot lid /></div>
+        <div class="sparks" data-sparks aria-hidden="true">
+          <svg viewBox="60 40 228 250" fill="var(--brand-word)" stroke="var(--prop-line)" stroke-width="1.4" focusable="false">
+            <g transform="translate(84 194) scale(1.4)"><use href="#spark"/></g>
+            <g transform="translate(158 186) scale(1.1)"><use href="#spark"/></g>
+            <g transform="translate(120 160) scale(.95)"><use href="#spark"/></g>
+            <g transform="translate(184 212) scale(.85)"><use href="#spark"/></g>
+            <g transform="translate(62 214) scale(1.05)"><use href="#spark"/></g>
+          </svg>
+        </div>
+        <div class="served" data-served aria-hidden="true">
+          <svg viewBox="0 0 100 92" focusable="false"><use href="#dish"/></svg>
+        </div>
+      </div>
+
+      <p class="kicker" style="margin-top:22px">{t.finale.kicker}</p>
+      <h2 class="h2" style="margin-inline:auto">{t.finale.title}</h2>
+      <p class="lede" style="margin-inline:auto">{t.finale.body}</p>
+      <StoreButtons lang={lang} />
+    </div>
+  </section>
+
+<script>
+/* ──────────────────────────────────────────────────────────────────────────
+   The pot's journey. One scroll listener, one rAF, CSS custom properties out —
+   every animated value is a transform or an opacity, nothing is measured
+   during the frame except three rects, and scrubbing back up rewinds it
+   exactly, because the whole thing is a pure function of scroll position.
+   ────────────────────────────────────────────────────────────────────────── */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* The `js` class is set in the document head, before first paint — see
+   Base.astro. It is not set here because this module is deferred, and a class
+   that lands after the first frame cannot prevent a flash. */
+
+const journey = document.querySelector<HTMLElement>('[data-journey]');
+const potlane = document.querySelector<HTMLElement>('[data-potlane]');
+const pot = document.querySelector<HTMLElement>('[data-pot]');
+const snake = document.querySelector<SVGPathElement>('[data-snake]');
+const pathSvg = document.querySelector<SVGSVGElement>('[data-path]');
+const splash = document.querySelector<HTMLElement>('[data-splash]');
+const scene = document.querySelector<HTMLElement>('[data-scene]');
+const sparks = document.querySelector<HTMLElement>('[data-sparks]');
+const served = document.querySelector<HTMLElement>('[data-served]');
+const tosses = Array.from(document.querySelectorAll<HTMLElement>('[data-toss]'));
+const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-card]'));
+const rests = Array.from(document.querySelectorAll<SVGGElement>('.rest'));
+
+const CYCLES = 4;
+const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+const snakeX = (t: number, amp: number) => Math.sin(t * Math.PI * CYCLES) * amp;
+const set = (el: Element | null, k: string, v: string) => el && (el as HTMLElement).style.setProperty(k, v);
+
+/* ease-out cubic — fast at first, settling. The cards' arrival, nothing else. */
+const arrive = (v: number) => 1 - Math.pow(1 - v, 3);
+
+/* 0 → 1 with gravity, landing at .8, then one small hop and a settle */
+function fall(k: number) {
+  if (k <= 0) return 0;
+  if (k >= 1) return 1;
+  if (k < 0.8) return Math.pow(k / 0.8, 1.55);
+  return 1 - 0.085 * Math.sin(((k - 0.8) / 0.2) * Math.PI);
+}
+/* the squash, peaking exactly at the landing */
+function squash(k: number) {
+  if (k < 0.72 || k > 0.95) return 0;
+  return Math.sin(((k - 0.72) / 0.23) * Math.PI);
+}
+
+let amp = 78;
+let H = window.innerHeight;
+
+/* The dotted path and the pot's sideways drift are the SAME sine evaluated
+   over the journey's real height, so they cannot fall out of step at any
+   width. The viewBox is 1:1 with the element's own pixel box. */
+function layout() {
+  if (!journey || !snake || !pathSvg) return;
+  H = window.innerHeight;
+  amp = window.innerWidth <= 1099 ? 34 : 60;
+  const w = pathSvg.clientWidth || 300;
+  const h = journey.offsetHeight || 1;
+  pathSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  let d = '';
+  for (let y = 0; y <= h; y += 8) {
+    d += (y ? ' L' : 'M') + (w / 2 + snakeX(y / h, amp)).toFixed(1) + ' ' + y;
+  }
+  snake.setAttribute('d', d);
+}
+
+function tick() {
+  if (!journey || !potlane) return;
+  const jr = journey.getBoundingClientRect();
+
+  /* where the pinned pot is, in the journey's own coordinates. Read from the
+     sticky element itself so the phone layout (pot docked under the nav) and
+     the desktop layout (pot at 42%) need no separate maths. */
+  const y = potlane.getBoundingClientRect().top - jr.top;
+  const t = clamp01(y / Math.max(1, jr.height));
+  const drift = snakeX(t, amp);
+  set(pot, '--px', drift.toFixed(2));
+  set(splash, '--px', drift.toFixed(2));
+
+  /* the throw starts at the card's side of the page, but never off-screen:
+     at 360px a fixed 320px offset would push the ingredient past the edge and
+     the page would scroll sideways. */
+  const reach = Math.min(320, window.innerWidth / 2 - 46);
+
+  let maxSq = 0;
+  tosses.forEach((el, i) => {
+    const card = cards[i];
+    if (!card) return;
+    const cr = card.getBoundingClientRect();
+    const cy = cr.top - jr.top + cr.height / 2;
+
+    /* the card rises into place as it comes up the screen. Like everything
+       else here it is a pure function of position, so scrolling back up
+       rewinds it — and it finishes well before the ingredient is thrown, so
+       you are reading a settled card when the pot takes from it. */
+    set(card, '--in', arrive(clamp01((H - cr.top) / (H * 0.34))).toFixed(4));
+    const span = window.innerWidth <= 1099 ? 190 : 240;
+    const k = clamp01((y - (cy - span * 0.82)) / span);
+    const sq = squash(k);
+    if (sq > maxSq) maxSq = sq;
+    set(el, '--k', fall(k).toFixed(4));
+    set(el, '--sq', sq.toFixed(4));
+    set(el, '--fx', String(Number(el.dataset.side ?? '1') * reach));
+    /* the landing point IS the pot, so it moves with the pot */
+    set(el, '--px', drift.toFixed(2));
+    el.classList.toggle('landed', k >= 1);
+    const rest = rests[i];
+    if (rest) rest.style.opacity = k >= 1 ? '1' : '0';
+  });
+  set(splash, '--sp', maxSq.toFixed(4));
+
+  /* the pot hands over to the one in his hands, so there are never two */
+  if (scene) {
+    const sr = scene.getBoundingClientRect();
+    set(pot, 'opacity', String(1 - clamp01((H - sr.top) / 320)));
+
+    /* the magic beat: lid on · shake · lid off · dinner */
+    const m = clamp01((H * 0.86 - sr.top) / (sr.height * 0.9 + H * 0.16));
+    const lidOn = clamp01(m / 0.26);
+    const lidOff = clamp01((m - 0.58) / 0.18);
+    set(scene, '--lid', (lidOn * (1 - lidOff)).toFixed(4));
+    const spark = m < 0.26 ? 0 : m < 0.4 ? (m - 0.26) / 0.14 : m < 0.68 ? 1 : clamp01(1 - (m - 0.68) / 0.16);
+    set(sparks, '--spark', clamp01(spark).toFixed(4));
+    set(served, '--dish', clamp01((m - 0.7) / 0.26).toFixed(4));
+    set(scene, '--grin', clamp01((m - 0.66) / 0.12).toFixed(4));
+    scene.classList.toggle('rattle', m > 0.24 && m < 0.62);
+  }
+}
+
+if (reduce) {
+  /* End frames, no choreography: everything already in the pot, lid gone,
+     dinner served. The dotted path is a DRAWING, not choreography, so it is
+     still drawn — and redrawn when the window changes. */
+  layout();
+  addEventListener('resize', layout);
+  rests.forEach((r) => (r.style.opacity = '1'));
+  set(scene, '--grin', '1');
+  set(scene, '--dish', '1');
+} else {
+  let queued = false;
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; tick(); });
+  };
+  const onResize = () => { layout(); onScroll(); };
+  layout();
+  tick();
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onResize);
+  addEventListener('load', onResize);
+  if ('fonts' in document) (document as any).fonts.ready.then(onResize);
+}
+</script>

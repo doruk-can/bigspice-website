@@ -1,0 +1,50 @@
+---
+/**
+ * The support page, once, for both languages.
+ *
+ * It exists for three reasons, in this order: App Store Connect and Google
+ * Play both require a support URL before a listing can go live; people with a
+ * problem need somewhere to land; and every question here is a sentence
+ * somebody types into a search box.
+ *
+ * Each question is its own h2 rather than a nested h3 — a question that is a
+ * top-level heading is a passage a search engine can rank on its own.
+ */
+import { SITE } from '../lib/site.mjs';
+import { copy, href, type Locale } from '../lib/copy';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = copy[lang];
+---
+<h1>{t.support.heading}</h1>
+<p class="lede">{t.support.lede}</p>
+
+<p class="support-contact">
+  {t.support.contactLabel} <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+</p>
+
+<p class="eyebrow support-eyebrow">{t.support.faqHeading}</p>
+{t.support.faq.map((item) => (
+  <div class="faq">
+    <h2>{item.q}</h2>
+    <p>{item.a}</p>
+    {item.more.length > 0 && (
+      <p class="faq-more">
+        {item.more.map((m, i) => (
+          <>
+            {i > 0 && <span aria-hidden="true"> · </span>}
+            <a href={href(lang, m.to)}>{m.text}</a>
+          </>
+        ))}
+      </p>
+    )}
+  </div>
+))}
+
+<p class="support-stuck">{t.support.stillStuck}</p>
+<p class="support-also">
+  {t.support.seeAlso}: <a href={href(lang, '/privacy')}>{t.nav.privacy}</a>
+  <span aria-hidden="true"> · </span>
+  <a href={href(lang, '/terms')}>{t.nav.terms}</a>
+</p>

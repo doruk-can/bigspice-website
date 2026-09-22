@@ -1,0 +1,44 @@
+---
+/**
+ * The official badge artwork, unmodified: Apple’s own SVG and Google’s own PNG,
+ * straight from their brand pages. Neither is recoloured, redrawn or cropped —
+ * the Play PNG’s built-in padding IS its required clear space, which is why the
+ * two are sized to match on the LOGO rather than on the file.
+ *
+ * Both marks are black, so each sits on a light chip in every theme rather than
+ * being swapped for a light variant we are not licensed to invent.
+ *
+ * No store listing exists yet, so with `href: null` in src/lib/site.mjs they
+ * render as static placeholders — never as a link that goes nowhere.
+ */
+import { SITE } from '../lib/site.mjs';
+import { copy, type Locale } from '../lib/copy';
+
+interface Props { lang: Locale; class?: string; pricing?: boolean }
+const { lang, class: cls = '', pricing = false } = Astro.props;
+const t = copy[lang].stores;
+const live = Boolean(SITE.appStore.href || SITE.playStore.href);
+---
+<div class={`stores ${cls}`}>
+  {SITE.appStore.href ? (
+    <a class="badge badge--apple" href={SITE.appStore.href} aria-label={t.appStore}>
+      <img src="/badges/app-store.svg" alt={t.appStoreAlt} width="120" height="40" />
+    </a>
+  ) : (
+    <span class="badge badge--apple is-disabled">
+      <img src="/badges/app-store.svg" alt={t.appStoreAlt + t.soonSuffix} width="120" height="40" />
+    </span>
+  )}
+
+  {SITE.playStore.href ? (
+    <a class="badge badge--play" href={SITE.playStore.href} aria-label={t.playStore}>
+      <img src="/badges/google-play.png" alt={t.playStoreAlt} width="145" height="56" />
+    </a>
+  ) : (
+    <span class="badge badge--play is-disabled">
+      <img src="/badges/google-play.png" alt={t.playStoreAlt + t.soonSuffix} width="145" height="56" />
+    </span>
+  )}
+</div>
+{!live && <p class="stores-note">{t.comingSoon}</p>}
+{pricing && <p class="stores-note">{t.pricing}</p>}

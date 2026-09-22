@@ -1,0 +1,21 @@
+---
+import Legal from '../layouts/Legal.astro';
+import * as doc from '../../legal/privacy-policy.md';
+import { fill } from '../lib/legal';
+import { copy } from '../lib/copy';
+import { legalSchema } from '../lib/schema';
+
+/* The source is legal/privacy-policy.md at the project root, imported, never
+   copied — one file, one truth. compiledContent() hands back the markdown
+   already rendered, which is the only point at which the handoff's bracketed
+   placeholders can be filled without touching the drafting itself.
+   See src/lib/legal.ts and legal/README.md section 2. */
+const lang = 'en' as const;
+const t = copy[lang];
+const html = fill(await doc.compiledContent());
+---
+<Legal lang={lang} title={t.meta.privacyTitle} description={t.meta.privacyDescription}
+       jsonLd={legalSchema(lang, '/privacy', t.meta.privacyTitle, t.meta.privacyDescription)}
+       notice={lang !== 'en'}>
+  <Fragment set:html={html} />
+</Legal>

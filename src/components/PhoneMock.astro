@@ -1,0 +1,31 @@
+---
+/**
+ * The product, above the fold: the app's own cook screen — one step, the drawn
+ * step band, the hands-off dial, Done. Drawn, not a screenshot, so it never
+ * goes stale against a build and costs nothing to load.
+ */
+import { copy, type Locale } from '../lib/copy';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const p = copy[lang].phone;
+---
+<div class="phone" role="img" aria-label={p.alt}>
+  <div class="phone-in">
+    <div class="notch"></div>
+    <p class="p-lab">{p.label} · {p.dish}</p>
+    <div class="p-band"><svg viewBox="0 0 100 62" aria-hidden="true" focusable="false"><use href="#i-stir"/></svg></div>
+    <div class="p-dial">
+      <svg viewBox="0 0 44 44" fill="none" aria-hidden="true" focusable="false">
+        <circle cx="22" cy="22" r="18" stroke="var(--hair)" stroke-width="3"/>
+        <circle cx="22" cy="22" r="18" stroke="var(--red)" stroke-width="3" stroke-linecap="round"
+                stroke-dasharray="113" stroke-dashoffset="42" transform="rotate(-90 22 22)"/>
+      </svg>
+      <div>
+        <div class="p-time">{p.timer}</div>
+        <div class="p-meta">{p.meta}</div>
+      </div>
+    </div>
+    <div class="p-btn">{p.button}</div>
+  </div>
+</div>

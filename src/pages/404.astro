@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { copy, href } from '../lib/copy';
+
+/* A 404 has no locale — whoever mistyped could have wanted either — so it
+   says it once in each and offers both ways back. */
+const en = copy.en;
+const tr = copy.tr;
+---
+<Base lang="en" title={en.meta.notFoundTitle} description={en.meta.notFoundDescription} noindex>
+  <section class="notfound">
+    <div class="wrap">
+      <p class="kicker">{en.notFound.kicker}</p>
+      <h1 class="h2">{en.notFound.title}</h1>
+      <p class="lede">{en.notFound.body}</p>
+      <p class="lede" lang="tr" style="margin-top:10px">{tr.notFound.body}</p>
+      <p class="nf-links">
+        <a href={href('en', '/')}>{en.nav.home}</a> ·
+        <a href={href('en', '/support')}>{en.nav.support}</a> ·
+        <a href={href('en', '/privacy')}>{en.nav.privacy}</a> ·
+        <a href={href('en', '/terms')}>{en.nav.terms}</a>
+        <span class="sep" aria-hidden="true"> · </span>
+        <a href={href('tr', '/')} lang="tr" hreflang="tr">{tr.nav.home}</a>
+      </p>
+    </div>
+  </section>
+</Base>
