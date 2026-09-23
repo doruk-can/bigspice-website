@@ -1,6 +1,17 @@
 import type { APIRoute } from 'astro';
 import { SITE } from '../lib/site.mjs';
 import { LOCALES, href } from '../lib/copy';
+import { lastUpdatedISO } from '../lib/legal';
+import * as privacyDoc from '../../legal/privacy-policy.md';
+import * as termsDoc from '../../legal/terms-of-use.md';
+
+/* Each legal page carries its own date on its face, and the two documents are
+   edited separately — so each gets its own <lastmod>, read from the document
+   rather than from a number kept somewhere else that can fall behind. */
+const UPDATED: Record<string, string> = {
+  '/privacy': lastUpdatedISO(privacyDoc.rawContent()),
+  '/terms': lastUpdatedISO(termsDoc.rawContent()),
+};
 
 /** Four pages in two languages, each listing the other as an alternate. */
 const PATHS = ['/', '/support', '/privacy', '/terms'];
@@ -16,9 +27,10 @@ export const GET: APIRoute = () => {
         `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE.url}${href('en', p)}"/>`,
       ].join('\n');
       /* Only the legal pages have a date that means anything — they carry one
-         on their face. Claiming a lastmod for the home page would be a number
-         invented to look fresh, which is what crawlers learn to ignore. */
-      const mod = p === '/' ? '' : `    <lastmod>${SITE.legalUpdatedISO}</lastmod>\n`;
+         on their face. Claiming a lastmod for the home page or for /support
+         would be a number invented to look fresh, which is what crawlers
+         learn to ignore. */
+      const mod = UPDATED[p] ? `    <lastmod>${UPDATED[p]}</lastmod>\n` : '';
       return `  <url>\n    <loc>${loc}</loc>\n${mod}${alts}\n  </url>`;
     })
   );

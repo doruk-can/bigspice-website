@@ -379,14 +379,26 @@ console.log('\n── the legal documents ──');
   else if (inDocs.size > 1) bad(`the documents name more than one mailbox: ${[...inDocs].join(', ')}`);
   else ok(`the site and both documents send mail to ${SITE.email}`);
 
-  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const [y, m, d] = SITE.legalUpdatedISO.split('-').map(Number);
-  const want = `Last updated: ${MONTHS[m - 1]} ${d}, ${y}`;
-  const drift = ['privacy-policy.md', 'terms-of-use.md'].filter(
-    (f) => !readFileSync(`legal/${f}`, 'utf8').split('\n').slice(0, 6).join(' ').includes(want)
-  );
-  if (drift.length) bad(`legalUpdatedISO is ${SITE.legalUpdatedISO} but ${drift.join(' and ')} do not say "${want}"`);
-  else ok(`both documents say "${want}", which is what <lastmod> publishes`);
+  /* Each document's date now comes from the document itself, so the two can
+     no longer drift — but they still have to REACH the page. This checks that
+     what a crawler is told matches what the reader is shown. */
+  const { lastUpdatedISO } = await import('../src/lib/legal.ts');
+  const DOC = { '/privacy': 'privacy-policy.md', '/terms': 'terms-of-use.md' };
+  const sitemap = readFileSync('dist/sitemap.xml', 'utf8');
+  for (const [route, file] of Object.entries(DOC)) {
+    const want = lastUpdatedISO(readFileSync(`legal/${file}`, 'utf8'));
+    const wrong = [];
+    for (const prefix of ['', '/tr']) {
+      const h = readFileSync(pages[prefix + route], 'utf8');
+      if (!h.includes(`"dateModified":"${want}"`) && !h.includes(`"dateModified": "${want}"`))
+        wrong.push(`${prefix + route} dateModified`);
+    }
+    const loc = new RegExp(`<loc>[^<]*${route}</loc>\\s*<lastmod>([^<]*)</lastmod>`);
+    const inMap = loc.exec(sitemap)?.[1];
+    if (inMap !== want) wrong.push(`sitemap lastmod is ${inMap ?? 'missing'}`);
+    if (wrong.length) bad(`${file} says ${want} but ${wrong.join(' · ')}`);
+    else ok(`${route.padEnd(12)} dated ${want}, and that is what the sitemap and both pages publish`);
+  }
 
   /* the anchors the App, the store listing and /support deep-link to */
   const ANCHORS = {

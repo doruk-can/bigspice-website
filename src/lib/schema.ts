@@ -155,7 +155,7 @@ export function supportSchema(lang: Locale) {
   };
 }
 
-export function legalSchema(lang: Locale, path: '/privacy' | '/terms', title: string, description: string) {
+export function legalSchema(lang: Locale, path: '/privacy' | '/terms', title: string, description: string, updatedISO: string) {
   const t = copy[lang];
   const url = `${SITE.url}${href(lang, path)}`;
   return {
@@ -177,7 +177,7 @@ export function legalSchema(lang: Locale, path: '/privacy' | '/terms', title: st
         isPartOf: { '@id': ID.site },
         about: { '@id': ID.app },
         publisher: { '@id': ID.org },
-        dateModified: SITE.legalUpdatedISO,
+        dateModified: updatedISO,
       },
       {
         '@type': 'BreadcrumbList',

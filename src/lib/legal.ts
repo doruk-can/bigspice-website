@@ -22,6 +22,26 @@ export const FILLS: Record<string, string | null> = {
   '[EFFECTIVE DATE]': SITE.legal.effectiveDate,
 };
 
+const MONTHS = ['January','February','March','April','May','June','July','August',
+                'September','October','November','December'];
+
+/**
+ * The date a document says it was last updated, read out of the document.
+ *
+ * There used to be a second copy of this in site.mjs, and the two drifted the
+ * first time one document was edited without the other — which is the whole
+ * problem with writing a fact down twice. Now <lastmod> and every page's
+ * dateModified come from the only place that can be right: the line the
+ * reader sees at the top of the page.
+ */
+export function lastUpdatedISO(markdown: string): string {
+  const m = /Last updated:\s*([A-Z][a-z]+)\s+(\d{1,2}),\s*(\d{4})/.exec(markdown);
+  if (!m) throw new Error('no "Last updated: Month D, YYYY" line in the document');
+  const month = MONTHS.indexOf(m[1]);
+  if (month < 0) throw new Error(`unknown month "${m[1]}"`);
+  return `${m[3]}-${String(month + 1).padStart(2, '0')}-${m[2].padStart(2, '0')}`;
+}
+
 /** The placeholders that are still unfilled, in the order they must be fixed. */
 export function unfilled(): string[] {
   return Object.entries(FILLS).filter(([, v]) => !v).map(([k]) => k);

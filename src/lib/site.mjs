@@ -65,10 +65,11 @@ export const SITE = {
    */
   autoLanguage: true,
 
-  /* The date people read is written into the four markdown files themselves;
-     this is the same date for machines, and it goes into <lastmod> and into
-     dateModified. `npm run verify` fails if the two ever disagree. */
-  legalUpdatedISO: '2026-09-21',
+  /* No date here. Each legal document carries its own "Last updated" line on
+     its face, the two are edited separately, and every machine-readable copy
+     — <lastmod>, dateModified — is read from that line by lastUpdatedISO() in
+     src/lib/legal.ts. A second copy in this file drifted the first time one
+     document was edited without the other. */
 };
 
 /* The nav's own labels live in copy.ts with every other string — a list of

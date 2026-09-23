@@ -28,12 +28,19 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          # 24, not 22: verify.mjs imports the .ts content files directly and
+          # relies on Node stripping the types, which is only unflagged from
+          # 22.18. Pinning the major that certainly has it removes the guess.
+          node-version: '24'
           cache: npm
       - run: npm ci
       - run: npm run build
       - run: npm run verify
-      - uses: actions/configure-pages@v5
+      # No `configure-pages` step. It exists to hand a framework the base path
+      # for a project site; this one is served at the apex of its own domain
+      # and sets `site` itself, so nothing here reads its output — while it is
+      # the one step that fails outright if Pages has not been switched to
+      # "GitHub Actions" yet, taking the whole build down with it.
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

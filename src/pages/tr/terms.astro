@@ -1,7 +1,7 @@
 ---
 import Legal from '../../layouts/Legal.astro';
 import * as doc from '../../../legal/terms-of-use.md';
-import { fill } from '../../lib/legal';
+import { fill, lastUpdatedISO } from '../../lib/legal';
 import { copy } from '../../lib/copy';
 import { legalSchema } from '../../lib/schema';
 
@@ -13,9 +13,10 @@ import { legalSchema } from '../../lib/schema';
 const lang = 'tr' as const;
 const t = copy[lang];
 const html = fill(await doc.compiledContent());
+const updated = lastUpdatedISO(doc.rawContent());
 ---
 <Legal lang={lang} title={t.meta.termsTitle} description={t.meta.termsDescription}
-       jsonLd={legalSchema(lang, '/terms', t.meta.termsTitle, t.meta.termsDescription)}
+       jsonLd={legalSchema(lang, '/terms', t.meta.termsTitle, t.meta.termsDescription, updated)}
        notice={lang !== 'en'}>
   <Fragment set:html={html} />
 </Legal>
