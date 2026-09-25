@@ -242,8 +242,25 @@ p, li { text-wrap: pretty; }
   border-bottom: 1px solid var(--rule);
 }
 .nav > .wrap { height: 100%; display: flex; align-items: center; gap: 24px; }
-.nav .brand { display: inline-flex; align-items: center; text-decoration: none; color: inherit; }
-.nav .brand .wm { font-size: 23px; }
+/* The brand is the splash lock-up on its own ochre badge — cream wordmark,
+   the toque as the tittle of the dotless ı, exactly as the app opens.
+   The band and the lettering are literals in both themes: a brand colour that
+   flips is not a brand colour, which is the rule the app already follows.
+
+   The top padding is not a round number. The toque hangs off a ZERO-HEIGHT
+   anchor, so it contributes nothing to layout and would paint straight out of
+   the badge: its top sits 1.336em above the baseline, which at 20px is 10.7px
+   above the text box. 14px top clears it with air; 8px bottom balances it
+   optically, because all the visual weight above the x-height is the hat. */
+.nav .brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  background: var(--brand-ochre);
+  border-radius: 9px;
+  padding: 14px 13px 8px;
+}
+.nav .brand .wm { font-size: 20px; --wm-c: var(--brand-word); }
 .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
 .nav ul {
   margin: 0;
@@ -927,10 +944,15 @@ html:not(.js) .scene { --dish: 1; --grin: 1; }
 
 @media (max-width: 640px) {
   .hero > .wrap { flex-direction: column; align-items: flex-start; gap: 6px; }
-  /* Stacked he has a line to himself, so he is sized against the screen
-     rather than pinned to one number — and 216 is the desktop clamp's own
-     floor, so nothing steps at the 640/641 boundary. */
-  .hero-chef { --chef-w: min(216px, 46vw); margin-right: 0; margin-left: -10px; }
+  /* Not on a phone. Stacked, he is a 179x197 block ABOVE the headline — a
+     third of the hero, and the thing a first-time visitor meets before a
+     single word. Measured at 390x664 the hero came to 646px with him and
+     444px without, so on anything smaller, or with the text size turned up,
+     the headline and the store badges fall past the fold.
+     He is not lost: he carries the whole finale scene further down, and the
+     pot he cooks in runs the length of the journey. Two lines to bring him
+     back at a smaller size if the fold ever stops mattering. */
+  .hero-chef { display: none; }
   .hero h1 { max-width: none; }
 }
 
@@ -984,7 +1006,9 @@ html:not(.js) .scene { --dish: 1; --grin: 1; }
   .nav a.link { font-size: 14px; }
   .nav .lang-switch { padding: 11px 4px 11px 10px; }
   .nav .lang-switch .globe { width: 16px; height: 16px; }
-  .nav .brand .wm { font-size: 19px; }
+  /* the badge shrinks with the bar; 11px of top padding still clears the hat */
+  .nav .brand { padding: 11px 9px 7px; border-radius: 8px; }
+  .nav .brand .wm { font-size: 16px; }
   .foot .foot-lang { margin-left: 0; }
   .journey { padding-top: 156px; }
   .potlane { --pot-w: 84px; --mouth: -16.8px; }

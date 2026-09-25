@@ -140,7 +140,8 @@ const navFit = (vw, lang) => {
      advance. The lock-up is weight 800; getVariation() is broken on the
      shipped subset, so this measures the static 800 instance that
      `npm run fonts` saves for the share card — no allowance, no guess. */
-  const brand = wordmarkW(small ? 19 : 23, -0.024);
+  /* the brand is a badge now: the wordmark plus its own horizontal padding */
+  const brand = wordmarkW(small ? 16 : 20, -0.024) + (small ? 18 : 26);
   const links =
     [t.nav.home, t.nav.privacy, t.nav.terms].reduce((n, s2) => n + textW(s2, small ? 14 : 15) + 4, 0) +
     ulGap * 2;
@@ -398,6 +399,24 @@ console.log('\n── the legal documents ──');
     if (inMap !== want) wrong.push(`sitemap lastmod is ${inMap ?? 'missing'}`);
     if (wrong.length) bad(`${file} says ${want} but ${wrong.join(' · ')}`);
     else ok(`${route.padEnd(12)} dated ${want}, and that is what the sitemap and both pages publish`);
+  }
+
+  /* legal/README.md §1.2 items 5 and 10, and Privacy section 14 — which does
+     not merely ask for this, it STATES it as a fact to the reader: these two
+     pages load no third-party analytics, ads, embeds, fonts or widgets. The
+     site has to keep making that true. `target="_blank"` is also out: it
+     behaves badly inside the in-app browser sheet the app opens them in. */
+  for (const route of ['/privacy', '/terms', '/tr/privacy', '/tr/terms']) {
+    const h = readFileSync(pages[route], 'utf8');
+    const third = [...h.matchAll(/(?:src|href)="(https?:\/\/[^"]+)"/g)]
+      .map((m) => m[1])
+      .filter((u) => !u.startsWith(SITE.url) && !u.startsWith('https://schema.org'));
+    const problems = [];
+    if (third.length) problems.push(`loads ${[...new Set(third)].join(', ')}`);
+    if (/target="_blank"/.test(h)) problems.push('has target="_blank"');
+    if (!h.includes(`mailto:${SITE.email}`)) problems.push('no mailto: link');
+    if (problems.length) bad(`${route}: ${problems.join(' · ')}`);
+    else ok(`${route.padEnd(12)} nothing third-party, no target=_blank, mailto present`);
   }
 
   /* the anchors the App, the store listing and /support deep-link to */
